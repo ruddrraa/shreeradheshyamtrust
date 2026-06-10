@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shree Radhe Shyam Bhakti Sarover Trust
+
+A premium, modern spiritual trust website built with Next.js 15, featuring Gau Seva, Bhakti teachings, Naam Sankirtan, dynamic gallery, events, donations, and an admin dashboard.
+
+## Tech Stack
+
+- **Next.js 15** (App Router) + TypeScript
+- **Tailwind CSS** — custom ivory, charcoal, gold, maroon palette
+- **Framer Motion** — scroll reveals, parallax, premium transitions
+- **MongoDB Atlas** — dynamic content storage
+- **NextAuth** — Google authentication for admin
+- **Cloudinary** — image uploads and optimization
+- **Razorpay** — donation payments
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Configure environment**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   Copy `.env.example` to `.env.local` and fill in your credentials:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   cp .env.example .env.local
+   ```
 
-## Learn More
+3. **Run development server**
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   Open [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Admin access**
 
-## Deploy on Vercel
+   Visit [http://localhost:3000/admin/login](http://localhost:3000/admin/login) and sign in with a Google account listed in `ADMIN_EMAILS`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Public Website
+- Immersive hero with parallax
+- Animated impact statistics
+- About, pillars, and vision sections
+- Masonry gallery with category filters
+- YouTube video showcase
+- Events with countdown timers
+- Razorpay donation flow
+- Testimonials and premium footer
+
+### Admin Dashboard (`/admin`)
+- Gallery management (upload, categorize, delete)
+- Video management (YouTube links)
+- Event management (banners, Luma links)
+- Donation analytics
+- Website settings (hero, contact, social, stats)
+
+## Deployment
+
+Deploy to Vercel and set all environment variables from `.env.example`. Ensure:
+
+- MongoDB Atlas allows connections from your deployment IP (or `0.0.0.0/0` for Vercel)
+- Google OAuth redirect URI includes your production domain
+- Razorpay webhook/domain is configured for production keys
+
+## Registration
+
+**Shree Radhe Shyam Bhakti Sarover Trust**  
+Reg. No. WB/2022/032510300209546/2022  
+Howrah, Kolkata, West Bengal

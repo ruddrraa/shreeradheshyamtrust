@@ -1,0 +1,136 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { AdminHeader } from "@/components/admin/AdminHeader";
+import { getYouTubeThumbnail } from "@/lib/utils";
+import type { Video } from "@/types";
+import { Trash2 } from "lucide-react";
+
+export default function VideosAdminPage() {
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [title, setTitle] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function fetchVideos() {
+    const res = await fetch("/api/videos");
+    setVideos(await res.json());
+  }
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const res = await fetch("/api/videos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, youtubeUrl }),
+      });
+
+      if (!res.ok) throw new Error("Failed");
+      setTitle("");
+      setYoutubeUrl("");
+      setMessage("Video added successfully");
+      fetchVideos();
+    } catch {
+      setMessage("Failed to add video");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("Delete this video?")) return;
+    await fetch("/api/videos", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    fetchVideos();
+  }
+
+  return (
+    <div>
+      <AdminHeader
+        title="Video Management"
+        description="Add YouTube videos to display on the website"
+      />
+
+      <form
+        onSubmit={handleSubmit}
+        className="p-6 bg-white border border-charcoal/5 mb-8 space-y-4"
+      >
+        <div>
+          <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">
+            Title
+          </label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+          />
+        </div>
+        <div>
+          <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">
+            YouTube URL
+          </label>
+          <input
+            type="url"
+            value={youtubeUrl}
+            onChange={(e) => setYoutubeUrl(e.target.value)}
+            required
+            placeholder="https://youtube.com/watch?v=..."
+            className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-6 py-3 text-sm bg-charcoal text-ivory hover:bg-charcoal/90 transition-colors disabled:opacity-50"
+        >
+          {loading ? "Adding..." : "Add Video"}
+        </button>
+        {message && <p className="text-sm text-charcoal/60">{message}</p>}
+      </form>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {videos.map((video) => (
+          <div key={video._id} className="border border-charcoal/5 bg-white">
+            <div className="relative aspect-video">
+              <Image
+                src={video.thumbnail || getYouTubeThumbnail(video.youtubeUrl)}
+                alt={video.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="p-4 flex justify-between items-start gap-4">
+              <div>
+                <p className="text-sm font-medium text-charcoal">{video.title}</p>
+                <p className="text-xs text-charcoal/40 mt-1 truncate">
+                  {video.youtubeUrl}
+                </p>
+              </div>
+              <button
+                onClick={() => handleDelete(video._id)}
+                className="p-2 text-charcoal/40 hover:text-red-600 shrink-0"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
