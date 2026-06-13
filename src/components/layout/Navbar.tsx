@@ -44,7 +44,7 @@ export function Navbar() {
               src="/Logo.png" 
               alt="Shree Radhe Shyam Bhakti Sarover Trust" 
               className={cn(
-                "h-12 w-auto object-contain transition-all duration-500",
+                "h-16 lg:h-20 w-auto object-contain transition-all duration-500",
                 !scrolled && "brightness-0 invert opacity-90 hover:opacity-100"
               )} 
             />

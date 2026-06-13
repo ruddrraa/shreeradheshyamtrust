@@ -13,12 +13,12 @@ An elegant, robust, and fully responsive platform built for the Shree Radhe Shya
 
 ## 🛠 Tech Stack
 
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, Server Components)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server Components)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Database**: [MongoDB Atlas](https://www.mongodb.com/) (Mongoose)
 - **Authentication**: [NextAuth.js v5](https://next-auth.js.org/)
-- **Media Storage**: [Cloudinary](https://cloudinary.com/)
-- **Payments**: [Razorpay API](https://razorpay.com/)
+- **Media Storage**: [Godaddy Hosting](https://godaddy.com/)
+- **Payments**: [Razorpay](https://razorpay.com/)
 - **Currency Conversion**: [Open Exchange Rates](https://openexchangerates.org/)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
 
@@ -74,10 +74,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application. To access the admin panel, navigate to `/admin`.
 
-## 🔒 Security Notes
-- **Environment Variables**: `.env` and `.env.local` are safely excluded via `.gitignore` to prevent secret leakage.
-- **Admin Access**: Only emails explicitly defined in the `ADMIN_EMAILS` environment variable can log into the `/admin` route. All others are rejected.
-- **Payment Verification**: Razorpay webhooks and success callbacks are verified strictly on the server-side before database mutation.
+
 
 ## 📄 License
 All rights reserved © Shree Radhe Shyam Bhakti Sarover Trust.
