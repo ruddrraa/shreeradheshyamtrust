@@ -42,18 +42,18 @@ export function EventCountdown({ targetDate }: EventCountdownProps) {
   const units = [
     { value: timeLeft.days, label: "Days" },
     { value: timeLeft.hours, label: "Hours" },
-    { value: timeLeft.minutes, label: "Min" },
-    { value: timeLeft.seconds, label: "Sec" },
+    { value: timeLeft.minutes, label: "Minutes" },
+    { value: timeLeft.seconds, label: "Seconds" },
   ];
 
   return (
-    <div className="flex gap-4 mt-6">
+    <div className="flex gap-8 mt-10 pt-10 border-t border-deep-brown/6">
       {units.map((unit) => (
         <div key={unit.label} className="text-center">
-          <p className="font-heading text-2xl text-ivory tabular-nums">
+          <p className="font-display text-3xl md:text-4xl text-deep-brown tabular-nums font-normal tracking-[-0.02em]">
             {String(unit.value).padStart(2, "0")}
           </p>
-          <p className="text-[10px] uppercase tracking-wider text-ivory/40 mt-1">
+          <p className="text-[9px] uppercase tracking-[0.24em] text-muted mt-2.5 font-medium">
             {unit.label}
           </p>
         </div>

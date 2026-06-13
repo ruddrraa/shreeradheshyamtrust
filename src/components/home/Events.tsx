@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Button } from "@/components/ui/Button";
+import { SacredImage } from "@/components/ui/SacredImage";
 import { EventCountdown } from "@/components/home/EventCountdown";
 import { formatDate } from "@/lib/utils";
 import type { Event } from "@/types";
@@ -21,48 +21,48 @@ export function Events({ events }: EventsProps) {
   if (upcoming.length === 0) return null;
 
   return (
-    <section id="events" className="py-24 lg:py-40 bg-ivory">
-      <Container>
+    <section id="events" className="py-32 lg:py-52 bg-surface">
+      <Container wide>
         <SectionHeader
           label="Join Us"
           title="Events & Gatherings"
           subtitle="Upcoming satsangs, sankirtan programs, and spiritual events."
         />
 
-        <div className="mt-16 space-y-12">
+        <div className="mt-24 space-y-20 lg:space-y-28">
           {upcoming.map((event, i) => {
             const isUpcoming = new Date(event.date) > new Date();
 
             return (
-              <FadeIn key={event._id} delay={i * 0.15}>
-                <article className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center group">
-                  <div className="relative aspect-[16/10] overflow-hidden order-2 lg:order-1">
-                    <Image
+              <FadeIn key={event._id} delay={i * 0.14}>
+                <article className="luxury-card overflow-hidden grid lg:grid-cols-2 group">
+                  <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[460px] overflow-hidden">
+                    <SacredImage
                       src={event.banner}
                       alt={event.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-[1.2s] group-hover:scale-[1.03]"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                   </div>
 
-                  <div className="order-1 lg:order-2">
-                    <p className="text-xs uppercase tracking-[0.2em] text-gold">
+                  <div className="p-11 lg:p-16 flex flex-col justify-center">
+                    <time className="text-[10px] uppercase tracking-[0.32em] text-gold font-medium">
                       {formatDate(event.date)}
-                    </p>
-                    <h3 className="mt-3 font-heading text-3xl md:text-4xl font-light text-charcoal">
+                    </time>
+                    <h3 className="mt-5 font-display text-3xl md:text-4xl lg:text-5xl font-normal text-deep-brown leading-[1.1] tracking-[-0.02em]">
                       {event.title}
                     </h3>
-                    <p className="mt-4 text-charcoal/60 leading-relaxed">
+                    <p className="mt-7 text-muted leading-[1.8] font-light text-lg">
                       {event.description}
                     </p>
 
                     {isUpcoming && <EventCountdown targetDate={event.date} />}
 
                     {event.lumaLink && (
-                      <div className="mt-8">
+                      <div className="mt-12">
                         <Button href={event.lumaLink} variant="primary">
-                          Register Now
+                          Register on Luma
                         </Button>
                       </div>
                     )}

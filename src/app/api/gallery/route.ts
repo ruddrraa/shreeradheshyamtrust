@@ -57,7 +57,9 @@ export async function DELETE(req: NextRequest) {
 
   try {
     await connectDB();
-    const { id } = await req.json();
+    const id = req.nextUrl.searchParams.get("id");
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
     const image = await Gallery.findById(id);
     if (!image) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -69,6 +71,45 @@ export async function DELETE(req: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Delete failed" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const session = await requireAdmin();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    await connectDB();
+    const { id, category, caption, image: newImageBase64 } = await req.json();
+
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
+    const galleryImage = await Gallery.findById(id);
+    if (!galleryImage) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    galleryImage.category = category || galleryImage.category;
+    if (caption !== undefined) galleryImage.caption = caption;
+
+    if (newImageBase64 && newImageBase64.startsWith("data:")) {
+      const uploaded = await uploadImage(newImageBase64, "gallery");
+      
+      if (galleryImage.publicId) {
+        await deleteImage(galleryImage.publicId).catch(() => {});
+      }
+      
+      galleryImage.url = uploaded.url;
+      galleryImage.publicId = uploaded.publicId;
+    }
+
+    await galleryImage.save();
+    return NextResponse.json(galleryImage);
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Update failed" },
       { status: 500 }
     );
   }

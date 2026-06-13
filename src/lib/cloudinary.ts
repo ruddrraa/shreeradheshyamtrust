@@ -14,6 +14,7 @@ export async function uploadImage(
 ): Promise<{ url: string; publicId: string }> {
   const result = await cloudinary.uploader.upload(file, {
     folder: `shreeradheshyam/${folder}`,
+    resource_type: "auto",
     transformation: [{ quality: "auto", fetch_format: "auto" }],
   });
   return { url: result.secure_url, publicId: result.public_id };

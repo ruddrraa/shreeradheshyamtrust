@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import type { GalleryImage, GalleryCategory } from "@/types";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit, ChevronLeft, ChevronRight } from "lucide-react";
 
-const categories: { value: GalleryCategory; label: string }[] = [
+const categories: { value: GalleryCategory | "all"; label: string }[] = [
+  { value: "all", label: "All Categories" },
   { value: "gau-seva", label: "Gau Seva" },
   { value: "sankirtan", label: "Sankirtan" },
   { value: "bhajan", label: "Bhajan Programs" },
@@ -19,6 +20,13 @@ export default function GalleryAdminPage() {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  // Filters & Pagination state
+  const [filterCategory, setFilterCategory] = useState<GalleryCategory | "all">("all");
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 12;
 
   async function fetchImages() {
     const res = await fetch("/api/gallery");
@@ -32,46 +40,93 @@ export default function GalleryAdminPage() {
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file && !editingId) return;
 
     setLoading(true);
     setMessage("");
 
-    const reader = new FileReader();
-    reader.onload = async () => {
+    const processUpload = async (base64Image?: string) => {
       try {
-        const res = await fetch("/api/gallery", {
-          method: "POST",
+        const url = "/api/gallery";
+        const method = editingId ? "PUT" : "POST";
+        const body = {
+          category,
+          caption,
+          ...(base64Image && { image: base64Image }),
+          ...(editingId && { id: editingId }),
+        };
+
+        const res = await fetch(url, {
+          method,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            image: reader.result,
-            category,
-            caption,
-          }),
+          body: JSON.stringify(body),
         });
 
         if (!res.ok) throw new Error("Upload failed");
-        setCaption("");
-        setMessage("Image uploaded successfully");
+        resetForm();
+        setMessage(`Image ${editingId ? "updated" : "uploaded"} successfully`);
         fetchImages();
       } catch {
-        setMessage("Failed to upload image");
+        setMessage(`Failed to ${editingId ? "update" : "upload"} image`);
       } finally {
         setLoading(false);
       }
     };
-    reader.readAsDataURL(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => processUpload(reader.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      processUpload();
+    }
+  }
+
+  function handleEdit(img: GalleryImage) {
+    setEditingId(img._id);
+    setCategory(img.category as GalleryCategory);
+    setCaption(img.caption || "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function resetForm() {
+    setEditingId(null);
+    setCategory("gau-seva");
+    setCaption("");
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this image?")) return;
-    await fetch("/api/gallery", {
+    await fetch(`/api/gallery?id=${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
     });
     fetchImages();
   }
+
+  // Derived state
+  const filteredAndSortedImages = useMemo(() => {
+    let result = [...images];
+    if (filterCategory !== "all") {
+      result = result.filter((img) => img.category === filterCategory);
+    }
+    result.sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return sortOrder === "newest" ? timeB - timeA : timeA - timeB;
+    });
+    return result;
+  }, [images, filterCategory, sortOrder]);
+
+  const totalPages = Math.ceil(filteredAndSortedImages.length / itemsPerPage);
+  const currentImages = filteredAndSortedImages.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [filterCategory, sortOrder]);
 
   return (
     <div>
@@ -81,6 +136,9 @@ export default function GalleryAdminPage() {
       />
 
       <div className="p-6 bg-white border border-charcoal/5 mb-8">
+        <h2 className="text-sm font-medium text-charcoal mb-4">
+          {editingId ? "Edit Media" : "Upload New Media"}
+        </h2>
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">
@@ -91,7 +149,7 @@ export default function GalleryAdminPage() {
               onChange={(e) => setCategory(e.target.value as GalleryCategory)}
               className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
             >
-              {categories.map((c) => (
+              {categories.filter(c => c.value !== "all").map((c) => (
                 <option key={c.value} value={c.value}>
                   {c.label}
                 </option>
@@ -112,39 +170,93 @@ export default function GalleryAdminPage() {
           </div>
         </div>
 
-        <label className="inline-block">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleUpload}
-            className="hidden"
-            disabled={loading}
-          />
-          <span className="inline-flex items-center px-6 py-3 text-sm bg-charcoal text-ivory cursor-pointer hover:bg-charcoal/90 transition-colors">
-            {loading ? "Uploading..." : "Upload Image"}
-          </span>
-        </label>
+        <div className="flex flex-wrap items-center gap-4">
+          <label className="inline-block">
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleUpload}
+              className="hidden"
+              disabled={loading}
+            />
+            <span className="inline-flex items-center px-6 py-3 text-sm bg-charcoal text-ivory cursor-pointer hover:bg-charcoal/90 transition-colors">
+              {loading ? "Processing..." : (editingId ? "Update File" : "Upload Media")}
+            </span>
+          </label>
+          
+          {editingId && (
+            <>
+              <button
+                onClick={() => handleUpload({ target: { files: null } } as any)}
+                disabled={loading}
+                className="px-6 py-3 text-sm bg-charcoal text-ivory hover:bg-charcoal/90 transition-colors disabled:opacity-50"
+              >
+                Save Details Only
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="px-6 py-3 text-sm border border-charcoal/15 text-charcoal hover:bg-charcoal/5 transition-colors"
+              >
+                Cancel Edit
+              </button>
+            </>
+          )}
+        </div>
 
         {message && (
           <p className="mt-4 text-sm text-charcoal/60">{message}</p>
         )}
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((img) => (
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+        <div className="flex gap-4 w-full sm:w-auto">
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value as any)}
+            className="border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+          >
+            {categories.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as any)}
+            className="border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {currentImages.map((img) => (
           <div
             key={img._id}
-            className="relative group border border-charcoal/5 bg-white"
+            className="relative group border border-charcoal/5 bg-white break-inside-avoid"
           >
-            <div className="relative aspect-square">
-              <Image
-                src={img.url}
-                alt={img.caption || "Gallery"}
-                fill
-                className="object-cover"
-              />
+            <div className="relative w-full overflow-hidden">
+              {img.url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                <video
+                  src={img.url}
+                  className="w-full h-auto object-cover"
+                  controls
+                  preload="metadata"
+                />
+              ) : (
+                <img
+                  src={img.url}
+                  alt={img.caption || "Gallery media"}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              )}
             </div>
-            <div className="p-4 flex justify-between items-center">
+            <div className="p-4 flex justify-between items-start">
               <div>
                 <p className="text-xs uppercase tracking-wider text-charcoal/40">
                   {img.category}
@@ -153,16 +265,48 @@ export default function GalleryAdminPage() {
                   <p className="text-sm text-charcoal/70 mt-1">{img.caption}</p>
                 )}
               </div>
-              <button
-                onClick={() => handleDelete(img._id)}
-                className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
-              >
-                <Trash2 size={16} />
-              </button>
+              <div className="flex flex-col gap-2 shrink-0">
+                <button
+                  onClick={() => handleEdit(img)}
+                  className="p-2 text-charcoal/40 hover:text-charcoal transition-colors"
+                  title="Edit image details"
+                >
+                  <Edit size={16} />
+                </button>
+                <button
+                  onClick={() => handleDelete(img._id)}
+                  className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
+                  title="Delete image"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="p-2 border border-charcoal/15 disabled:opacity-30"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <span className="text-sm text-charcoal/60">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="p-2 border border-charcoal/15 disabled:opacity-30"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

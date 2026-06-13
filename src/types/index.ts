@@ -46,25 +46,80 @@ export interface Donation {
   donorEmail?: string;
   isAnonymous: boolean;
   currency: string;
+  originalAmount?: number;
+  originalCurrency?: string;
   razorpayPaymentId?: string;
   createdAt: string;
 }
+
+export type TypographySetting = {
+  fontSize?: number;
+  color?: string;
+};
+
+export type SectionTypography = {
+  overhead?: TypographySetting;
+  heading?: TypographySetting;
+  subheading?: TypographySetting;
+  body?: TypographySetting;
+};
 
 export interface SiteSettings {
   _id: string;
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
+  heroImagePublicId?: string;
+  aboutTitle: string;
+  aboutSubtitle: string;
+  aboutDescription: string;
+  aboutImage: string;
+  aboutImagePublicId?: string;
+  pillars: {
+    _id?: string;
+    title: string;
+    subtitle: string;
+    description: string;
+    image: string;
+    imagePublicId?: string;
+  }[];
+  visionSanskrit: string;
+  visionSubtitle: string;
+  visionImage: string;
+  visionImagePublicId?: string;
   contactEmail: string;
   contactPhone: string;
   address: string;
-  socialLinks: {
+  socialLinks?: {
     facebook?: string;
     instagram?: string;
     youtube?: string;
     whatsapp?: string;
   };
-  impactStats: {
+  themeBackground: string;
+  themeSurface: string;
+  themePrimary: string;
+  themeAccent: string;
+  themeText: string;
+  baseFontSize: number;
+  typography?: {
+    global?: SectionTypography;
+    hero?: SectionTypography;
+    about?: SectionTypography;
+    pillars?: SectionTypography;
+    vision?: SectionTypography;
+    contact?: SectionTypography;
+  };
+  colorHistory?: {
+    themeBackground?: string;
+    themeSurface?: string;
+    themePrimary?: string;
+    themeAccent?: string;
+    themeText?: string;
+    typography?: any;
+    savedAt: string;
+  }[];
+  impactStats?: {
     gauSeva: number;
     spiritualPrograms: number;
     sankirtanGatherings: number;
@@ -73,8 +128,10 @@ export interface SiteSettings {
 }
 
 export interface Testimonial {
-  id: string;
+  _id: string;
   name: string;
   role: string;
   quote: string;
+  isApproved: boolean;
+  createdAt: string;
 }

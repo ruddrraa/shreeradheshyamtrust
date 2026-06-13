@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, Noto_Serif_Devanagari } from "next/font/google";
+import {
+  Bodoni_Moda,
+  Cormorant_Garamond,
+  Inter,
+  Noto_Serif_Devanagari,
+} from "next/font/google";
 import "./globals.css";
+import { getSettings } from "@/lib/data";
+
+const bodoni = Bodoni_Moda({
+  variable: "--font-bodoni",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -48,16 +61,32 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSettings();
+
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} ${notoDevanagari.variable} h-full antialiased`}
+      className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} ${notoDevanagari.variable} h-full antialiased`}
     >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: `
+          :root {
+            ${settings.themeBackground ? `--background: ${settings.themeBackground};` : ""}
+            ${settings.themeSurface ? `--surface: ${settings.themeSurface};` : ""}
+            ${settings.themePrimary ? `--maroon: ${settings.themePrimary};` : ""}
+            ${settings.themeAccent ? `--gold: ${settings.themeAccent};` : ""}
+            ${settings.themeText ? `--charcoal: ${settings.themeText};` : ""}
+          }
+          html {
+            font-size: ${settings.baseFontSize || 16}px !important;
+          }
+        `}} />
+      </head>
       <body className="min-h-full flex flex-col font-body">{children}</body>
     </html>
   );

@@ -1,53 +1,15 @@
-"use client";
-
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { Button } from "@/components/ui/Button";
+import { requireAdmin } from "@/lib/auth";
+import { LoginContent } from "./LoginContent";
 
-function LoginContent() {
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+export default async function AdminLoginPage() {
+  const session = await requireAdmin();
 
-  return (
-    <div className="min-h-screen bg-charcoal flex items-center justify-center px-6">
-      <div className="max-w-md w-full text-center">
-        <p className="font-heading text-3xl text-ivory font-light">
-          Admin Portal
-        </p>
-        <p className="mt-3 text-ivory/50 text-sm">
-          Shree Radhe Shyam Bhakti Sarover Trust
-        </p>
+  if (session?.user) {
+    redirect("/admin");
+  }
 
-        {error && (
-          <p className="mt-6 text-sm text-red-400">
-            Access denied. Only authorized administrators may sign in.
-          </p>
-        )}
-
-        <div className="mt-10">
-          <Button
-            onClick={() => signIn("google", { callbackUrl: "/admin" })}
-            variant="secondary"
-            size="lg"
-            className="w-full"
-          >
-            Sign in with Google
-          </Button>
-        </div>
-
-        <a
-          href="/"
-          className="inline-block mt-8 text-xs text-ivory/40 hover:text-gold transition-colors"
-        >
-          ← Back to website
-        </a>
-      </div>
-    </div>
-  );
-}
-
-export default function AdminLoginPage() {
   return (
     <Suspense>
       <LoginContent />

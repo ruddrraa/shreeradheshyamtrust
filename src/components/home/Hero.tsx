@@ -1,38 +1,63 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/Button";
-import { ChevronDown } from "lucide-react";
+import { SacredImage } from "@/components/ui/SacredImage";
+
+import type { SectionTypography } from "@/types";
 
 interface HeroProps {
+  image: string;
   title: string;
   subtitle: string;
-  image: string;
+  typography?: SectionTypography;
 }
 
-export function Hero({ title, subtitle, image }: HeroProps) {
+export function Hero({ image, title, subtitle, typography }: HeroProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   return (
-    <section ref={ref} className="relative h-screen min-h-[700px] overflow-hidden">
-      <motion.div style={{ y }} className="absolute inset-0">
-        <Image
+    <section
+      ref={ref}
+      className="relative h-screen min-h-[100dvh] overflow-hidden hero-grain"
+    >
+      <motion.div
+        style={{ y, scale }}
+        className="absolute inset-0"
+      >
+        <SacredImage
           src={image}
-          alt="Spiritual devotion"
+          alt="Sacred devotion — Gau Seva, Bhakti, and spiritual gathering"
           fill
           priority
-          className="object-cover scale-105"
+          className="object-cover object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-charcoal/40 to-charcoal/70" />
+        {/* Cinematic Vrindavan overlays */}
+        <div className="absolute inset-0 z-[3] bg-gradient-to-b from-charcoal/50 via-deep-brown/25 to-deep-brown/70" />
+        <div className="absolute inset-0 z-[3] bg-gradient-to-t from-background/20 via-transparent to-transparent" />
+        <div
+          className="absolute inset-0 z-[3]"
+          style={{
+            background:
+              "radial-gradient(ellipse 55% 45% at 50% 42%, rgb(245 240 232 / 0.18), transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 z-[3] opacity-40"
+          style={{
+            background:
+              "radial-gradient(ellipse 100% 80% at 50% 100%, rgb(194 161 94 / 0.15), transparent 55%)",
+          }}
+        />
       </motion.div>
 
       <motion.div
@@ -42,26 +67,45 @@ export function Hero({ title, subtitle, image }: HeroProps) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-6 text-xs uppercase tracking-[0.3em] text-gold"
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-10 text-[11px] uppercase tracking-[0.42em] font-medium"
+          style={{
+            color: typography?.overhead?.color || "#c2a15e", // gold-light
+            fontSize: typography?.overhead?.fontSize ? `${typography.overhead.fontSize}px` : undefined,
+          }}
         >
-          Howrah, Kolkata · West Bengal
+          Dedicated to Seva, Bhakti & Spiritual Enlightenment
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading max-w-5xl text-4xl font-light leading-tight text-ivory sm:text-5xl md:text-6xl lg:text-7xl"
+          transition={{ duration: 1.3, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display text-white font-normal leading-[1.02] tracking-[-0.02em] text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.75rem] 2xl:text-[7.5rem] max-w-5xl mx-auto drop-shadow-lg"
+          style={{
+            fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
+            color: typography?.heading?.color || undefined,
+          }}
         >
-          {title}
+          {title.includes("Bhakti Sarover Trust") ? (
+            <>
+              <span className="block">{title.replace("Bhakti Sarover Trust", "").trim()}</span>
+              <span className="block text-gold-light mt-3 lg:mt-4 text-[0.8em]">Bhakti Sarover Trust</span>
+            </>
+          ) : (
+            title
+          )}
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-8 max-w-2xl text-lg font-light leading-relaxed text-ivory/80 md:text-xl"
+          transition={{ duration: 1.1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-12 max-w-3xl text-base md:text-lg lg:text-xl font-light leading-[1.8] text-white/90 drop-shadow-md mx-auto"
+          style={{
+            fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
+            color: typography?.subheading?.color || undefined,
+          }}
         >
           {subtitle}
         </motion.p>
@@ -69,10 +113,10 @@ export function Hero({ title, subtitle, image }: HeroProps) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-12 flex flex-col sm:flex-row gap-4"
+          transition={{ duration: 1.1, delay: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-16 flex flex-col sm:flex-row gap-4 sm:gap-6"
         >
-          <Button href="#donate" variant="secondary" size="lg">
+          <Button href="#donate" variant="primary" size="lg">
             Join Seva
           </Button>
           <Button href="#donate" variant="outline" size="lg">
@@ -83,25 +127,24 @@ export function Hero({ title, subtitle, image }: HeroProps) {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="mt-10 font-devanagari text-sm text-gold/90"
+          transition={{ duration: 1.2, delay: 1.35 }}
+          className="mt-14 font-devanagari text-base md:text-lg text-gold-light tracking-wide"
         >
-          जय श्री राधे श्याम
+          🙏 जय श्री राधे श्याम 🙏
         </motion.p>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        transition={{ delay: 1.8, duration: 1.2 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
+        aria-hidden
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown className="text-ivory/50" size={24} />
-        </motion.div>
+        <span className="text-[9px] uppercase tracking-[0.35em] text-white/35">
+          Scroll
+        </span>
+        <div className="w-px h-14 bg-gradient-to-b from-gold-light/70 to-transparent" />
       </motion.div>
     </section>
   );

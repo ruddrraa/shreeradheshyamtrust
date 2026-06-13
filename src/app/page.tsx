@@ -17,6 +17,7 @@ import {
   getEvents,
   getDonations,
 } from "@/lib/data";
+import { deepMergeTypography } from "@/lib/utils";
 
 export default async function HomePage() {
   const [settings, gallery, videos, events, donationData] = await Promise.all([
@@ -31,15 +32,29 @@ export default async function HomePage() {
     <>
       <Navbar />
       <main>
-        <Hero
+        <Hero 
+          image={settings.heroImage} 
           title={settings.heroTitle}
           subtitle={settings.heroSubtitle}
-          image={settings.heroImage}
+          typography={deepMergeTypography(settings.typography?.global, settings.typography?.hero)}
         />
         <Impact stats={settings.impactStats} />
-        <About />
-        <Pillars />
-        <Vision />
+        <About 
+          about={{
+            title: settings.aboutTitle,
+            subtitle: settings.aboutSubtitle,
+            description: settings.aboutDescription,
+            image: settings.aboutImage
+          }} 
+          typography={deepMergeTypography(settings.typography?.global, settings.typography?.about)}
+        />
+        <Pillars pillars={settings.pillars || []} typography={deepMergeTypography(settings.typography?.global, settings.typography?.pillars)} />
+        <Vision 
+          sanskrit={settings.visionSanskrit}
+          subtitle={settings.visionSubtitle}
+          image={settings.visionImage}
+          typography={deepMergeTypography(settings.typography?.global, settings.typography?.vision)}
+        />
         <Gallery images={gallery} />
         <Videos videos={videos} />
         <Events events={events} />
@@ -54,6 +69,7 @@ export default async function HomePage() {
         contactPhone={settings.contactPhone}
         address={settings.address}
         socialLinks={settings.socialLinks}
+        typography={deepMergeTypography(settings.typography?.global, settings.typography?.contact)}
       />
     </>
   );

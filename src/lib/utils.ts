@@ -39,3 +39,23 @@ export function getYouTubeThumbnail(url: string): string {
     ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
     : "/images/video-placeholder.jpg";
 }
+
+export function deepMergeTypography(
+  base: Record<string, any> = {},
+  override: Record<string, any> = {}
+) {
+  const result = { ...base };
+  for (const key in override) {
+    if (
+      typeof override[key] === "object" &&
+      override[key] !== null &&
+      typeof base[key] === "object" &&
+      base[key] !== null
+    ) {
+      result[key] = deepMergeTypography(base[key], override[key]);
+    } else if (override[key] !== undefined) {
+      result[key] = override[key];
+    }
+  }
+  return result;
+}

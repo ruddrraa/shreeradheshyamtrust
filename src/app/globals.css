@@ -1,20 +1,36 @@
 @import "tailwindcss";
 
+/* ─── Vrindavan Luxe Design System ─── */
 :root {
-  --ivory: #faf7f2;
-  --charcoal: #111111;
-  --gold: #c8a95a;
-  --maroon: #5c1f1f;
+  --background: #f5f0e8;
+  --surface: #faf7f2;
+  --gold: #c2a15e;
+  --gold-light: #d8bb84;
+  --deep-brown: #2f241b;
+  --charcoal: #1c1a18;
+  --maroon: #6a3024;
+  --muted: #8b7c6a;
+  --white: #ffffff;
 }
 
 @theme inline {
-  --color-ivory: var(--ivory);
-  --color-charcoal: var(--charcoal);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-deep-brown: var(--deep-brown);
+  --color-charcoal: var(--charcoal);
   --color-maroon: var(--maroon);
+  --color-muted: var(--muted);
+  --color-ivory: var(--white);
+  --font-display: var(--font-bodoni);
   --font-heading: var(--font-cormorant);
   --font-body: var(--font-inter);
   --font-devanagari: var(--font-noto-devanagari);
+  --shadow-luxury: 0 28px 72px -16px rgb(47 36 27 / 0.1);
+  --shadow-luxury-lg: 0 40px 96px -20px rgb(47 36 27 / 0.14);
+  --shadow-gold-glow: 0 12px 40px -8px rgb(194 161 94 / 0.4);
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
@@ -22,20 +38,119 @@ html {
 }
 
 body {
-  background: var(--ivory);
+  background: var(--background);
   color: var(--charcoal);
   font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--gold) 30%, transparent);
-  color: var(--charcoal);
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
+  color: var(--deep-brown);
+}
+
+.font-display {
+  font-family: var(--font-display), "Bodoni Moda", Georgia, serif;
 }
 
 .font-heading {
-  font-family: var(--font-heading), Georgia, serif;
+  font-family: var(--font-heading), "Cormorant Garamond", Georgia, serif;
 }
 
 .font-devanagari {
   font-family: var(--font-devanagari), serif;
+}
+
+/* ─── Sacred image grade — golden hour, unified visual universe ─── */
+.sacred-image-wrap {
+  isolation: isolate;
+}
+
+.sacred-image-wrap .sacred-image {
+  filter: saturate(0.82) contrast(0.94) brightness(1.03) sepia(0.14);
+  transition:
+    transform 1.4s var(--ease-luxe),
+    filter 0.8s ease;
+}
+
+.sacred-image-wrap:hover .sacred-image {
+  filter: saturate(0.88) contrast(0.96) brightness(1.05) sepia(0.1);
+}
+
+.sacred-image-grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    165deg,
+    rgb(216 187 132 / 0.12) 0%,
+    transparent 40%,
+    rgb(47 36 27 / 0.18) 100%
+  );
+  mix-blend-mode: soft-light;
+}
+
+.sacred-image-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 30%,
+    rgb(245 240 232 / 0.08),
+    transparent 65%
+  );
+}
+
+/* ─── Luxury surfaces ─── */
+.luxury-card {
+  background: var(--white);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-luxury);
+  border: 1px solid color-mix(in srgb, var(--deep-brown) 5%, transparent);
+  transition:
+    box-shadow 0.6s var(--ease-luxe),
+    transform 0.6s var(--ease-luxe);
+}
+
+.luxury-card:hover {
+  box-shadow: var(--shadow-luxury-lg);
+}
+
+.museum-frame {
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow-luxury-lg);
+  border: 1px solid color-mix(in srgb, var(--gold) 12%, transparent);
+}
+
+.btn-gold-glow {
+  transition:
+    box-shadow 0.5s var(--ease-luxe),
+    transform 0.5s var(--ease-luxe),
+    background-color 0.4s ease;
+}
+
+.btn-gold-glow:hover {
+  box-shadow: var(--shadow-gold-glow);
+  transform: translateY(-2px);
+}
+
+/* Hero cinematic grain */
+.hero-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Section divider */
+.luxe-divider {
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }

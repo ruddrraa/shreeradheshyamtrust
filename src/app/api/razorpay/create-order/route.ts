@@ -15,36 +15,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const razorpay = getRazorpayInstance();
-    const order = await razorpay.orders.create({
-      amount: Math.round(amount * 100),
-      currency: "INR",
-      receipt: `donation_${Date.now()}`,
-    });
-
-    await connectDB();
-    await Donation.create({
-      amount,
-      purpose,
-      donorName,
-      donorEmail,
-      isAnonymous: isAnonymous ?? false,
-      razorpayOrderId: order.id,
-      currency: "INR",
-    });
+    let order;
+    try {
+      const razorpay = getRazorpayInstance();
+      order = await razorpay.orders.create({
+        amount: Math.round(amount * 100),
+        currency: "INR",
+        receipt: `donation_${Date.now()}`,
+      });
+    } catch (rzpError: any) {
+      console.error("Razorpay Error:", rzpError);
+      return NextResponse.json(
+        { error: rzpError?.error?.description || rzpError?.message || "Invalid API key or Razorpay service error." },
+        { status: 400 }
+      );
+    }
 
     return NextResponse.json({
       orderId: order.id,
-      keyId: process.env.RAZORPAY_KEY_ID,
+      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID,
     });
   } catch (error) {
+    console.error("Create Order Error:", error);
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Payment service unavailable",
-      },
+      { error: "Payment service unavailable" },
       { status: 500 }
     );
   }

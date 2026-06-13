@@ -34,19 +34,25 @@ const statLabels = [
 
 export function Impact({ stats }: ImpactProps) {
   return (
-    <section className="py-24 lg:py-32 bg-ivory border-y border-charcoal/5">
-      <Container>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+    <section className="py-24 lg:py-36 bg-background">
+      <Container wide>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20">
           {statLabels.map((stat, i) => (
             <FadeIn key={stat.key} delay={i * 0.1}>
-              <div className="text-center">
-                <p className="font-heading text-5xl md:text-6xl font-light text-charcoal">
+              <div className="text-center lg:text-left relative">
+                {i > 0 && (
+                  <div
+                    className="hidden lg:block absolute -left-10 top-1/2 -translate-y-1/2 w-px h-16 bg-deep-brown/8"
+                    aria-hidden
+                  />
+                )}
+                <p className="font-display text-5xl md:text-6xl lg:text-7xl font-normal text-deep-brown tracking-[-0.02em]">
                   <AnimatedCounter
                     value={stats[stat.key]}
                     suffix={stat.suffix}
                   />
                 </p>
-                <p className="mt-3 text-sm text-charcoal/50 tracking-wide">
+                <p className="mt-5 text-[10px] uppercase tracking-[0.24em] text-muted font-medium">
                   {stat.label}
                 </p>
               </div>

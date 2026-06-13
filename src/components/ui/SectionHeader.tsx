@@ -9,7 +9,7 @@ interface SectionHeaderProps {
   subtitle?: string;
   align?: "left" | "center";
   className?: string;
-  dark?: boolean;
+  light?: boolean;
 }
 
 export function SectionHeader({
@@ -18,33 +18,34 @@ export function SectionHeader({
   subtitle,
   align = "center",
   className,
-  dark = false,
+  light = false,
 }: SectionHeaderProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        align === "center" && "text-center mx-auto max-w-3xl",
+        align === "center" && "text-center mx-auto max-w-4xl",
+        align === "left" && "max-w-3xl",
         className
       )}
     >
       {label && (
-        <p
-          className={cn(
-            "text-xs uppercase tracking-[0.25em] mb-4 font-medium",
-            dark ? "text-gold" : "text-gold"
+        <>
+          <p className="text-[11px] uppercase tracking-[0.38em] mb-5 font-medium text-gold">
+            {label}
+          </p>
+          {align === "center" && (
+            <div className="luxe-divider mx-auto mb-8" aria-hidden />
           )}
-        >
-          {label}
-        </p>
+        </>
       )}
       <h2
         className={cn(
-          "font-heading text-4xl md:text-5xl lg:text-6xl font-light leading-tight",
-          dark ? "text-ivory" : "text-charcoal"
+          "font-display text-[2.75rem] md:text-5xl lg:text-6xl xl:text-[4.5rem] font-normal leading-[1.06] tracking-[-0.02em]",
+          light ? "text-white" : "text-deep-brown"
         )}
       >
         {title}
@@ -52,8 +53,9 @@ export function SectionHeader({
       {subtitle && (
         <p
           className={cn(
-            "mt-6 text-lg leading-relaxed font-light",
-            dark ? "text-ivory/70" : "text-charcoal/60"
+            "mt-8 text-lg md:text-xl leading-[1.75] font-light max-w-2xl",
+            align === "center" && "mx-auto",
+            light ? "text-white/72" : "text-muted"
           )}
         >
           {subtitle}

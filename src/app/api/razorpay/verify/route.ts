@@ -9,6 +9,11 @@ export async function POST(req: NextRequest) {
       razorpay_payment_id,
       razorpay_order_id,
       razorpay_signature,
+      amount,
+      purpose,
+      donorName,
+      donorEmail,
+      isAnonymous,
     } = await req.json();
 
     const body = `${razorpay_order_id}|${razorpay_payment_id}`;
@@ -25,10 +30,16 @@ export async function POST(req: NextRequest) {
     }
 
     await connectDB();
-    await Donation.findOneAndUpdate(
-      { razorpayOrderId: razorpay_order_id },
-      { razorpayPaymentId: razorpay_payment_id }
-    );
+    await Donation.create({
+      amount,
+      purpose,
+      donorName,
+      donorEmail,
+      isAnonymous: isAnonymous ?? false,
+      razorpayOrderId: razorpay_order_id,
+      razorpayPaymentId: razorpay_payment_id,
+      currency: "INR",
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

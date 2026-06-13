@@ -20,7 +20,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -30,52 +30,51 @@ export function Navbar() {
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-700",
           scrolled
-            ? "bg-ivory/80 backdrop-blur-xl border-b border-charcoal/5 py-3"
-            : "bg-transparent py-5"
+            ? "bg-background/90 backdrop-blur-2xl border-b border-deep-brown/6 py-3"
+            : "bg-gradient-to-b from-charcoal/30 to-transparent py-7"
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10">
           <Link href="/" className="group flex flex-col">
             <span
               className={cn(
-                "font-heading text-lg md:text-xl font-medium tracking-wide transition-colors",
-                scrolled ? "text-charcoal" : "text-ivory"
+                "font-display text-lg md:text-xl tracking-wide transition-colors duration-500",
+                scrolled ? "text-deep-brown" : "text-white"
               )}
             >
               Shree Radhe Shyam
             </span>
             <span
               className={cn(
-                "text-[10px] uppercase tracking-[0.2em] transition-colors",
-                scrolled ? "text-charcoal/50" : "text-ivory/60"
+                "text-[9px] uppercase tracking-[0.28em] transition-colors duration-500 font-medium",
+                scrolled ? "text-muted" : "text-white/50"
               )}
             >
               Bhakti Sarover Trust
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-8 lg:flex">
+          <nav className="hidden items-center gap-11 lg:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm tracking-wide transition-colors duration-300 hover:opacity-70",
-                  scrolled ? "text-charcoal/70" : "text-ivory/80"
+                  "relative text-[13px] tracking-[0.04em] transition-colors duration-400 group font-light",
+                  scrolled
+                    ? "text-charcoal/65 hover:text-gold"
+                    : "text-white/70 hover:text-gold-light"
                 )}
               >
                 {link.label}
+                <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all duration-400 group-hover:w-full" />
               </Link>
             ))}
-            <Button
-              href="#donate"
-              variant={scrolled ? "primary" : "outline"}
-              size="sm"
-            >
+            <Button href="#donate" variant="primary" size="sm">
               Join Seva
             </Button>
           </nav>
@@ -84,11 +83,11 @@ export function Navbar() {
             onClick={() => setMobileOpen(true)}
             className={cn(
               "lg:hidden p-2 transition-colors",
-              scrolled ? "text-charcoal" : "text-ivory"
+              scrolled ? "text-deep-brown" : "text-white"
             )}
             aria-label="Open menu"
           >
-            <Menu size={22} />
+            <Menu size={22} strokeWidth={1.25} />
           </button>
         </div>
       </motion.header>
@@ -99,43 +98,39 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-charcoal/60 backdrop-blur-sm lg:hidden"
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-[60] bg-charcoal/55 backdrop-blur-md lg:hidden"
             onClick={() => setMobileOpen(false)}
           >
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="absolute right-0 top-0 h-full w-[min(320px,85vw)] bg-ivory p-8 shadow-2xl"
+              className="absolute right-0 top-0 h-full w-[min(360px,90vw)] bg-surface p-10 shadow-2xl"
             >
-              <div className="flex justify-end mb-8">
+              <div className="flex justify-end mb-12">
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="p-2 text-charcoal"
+                  className="p-2 text-deep-brown"
                   aria-label="Close menu"
                 >
-                  <X size={22} />
+                  <X size={22} strokeWidth={1.25} />
                 </button>
               </div>
-              <nav className="flex flex-col gap-6">
+              <nav className="flex flex-col gap-8">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="font-heading text-2xl text-charcoal"
+                    className="font-display text-3xl text-deep-brown hover:text-gold transition-colors duration-400"
                   >
                     {link.label}
                   </Link>
                 ))}
-                <Button
-                  href="#donate"
-                  variant="primary"
-                  className="mt-4"
-                  onClick={() => setMobileOpen(false)}
-                >
+                <Button href="#donate" variant="primary" className="mt-8 w-fit">
                   Join Seva
                 </Button>
               </nav>

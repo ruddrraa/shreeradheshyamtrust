@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { formatDate } from "@/lib/utils";
 import type { Event } from "@/types";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 
 export default function EventsAdminPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -16,6 +16,7 @@ export default function EventsAdminPage() {
   const [banner, setBanner] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   async function fetchEvents() {
     const res = await fetch("/api/events");
@@ -40,39 +41,61 @@ export default function EventsAdminPage() {
     setMessage("");
 
     try {
-      const res = await fetch("/api/events", {
-        method: "POST",
+      const url = "/api/events";
+      const method = editingId ? "PUT" : "POST";
+      const body = {
+        title,
+        description,
+        date,
+        lumaLink,
+        banner,
+        ...(editingId && { id: editingId }),
+      };
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          description,
-          date,
-          lumaLink,
-          banner,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) throw new Error("Failed");
-      setTitle("");
-      setDescription("");
-      setDate("");
-      setLumaLink("");
-      setBanner(null);
-      setMessage("Event created successfully");
+      resetForm();
+      setMessage(`Event ${editingId ? "updated" : "created"} successfully`);
       fetchEvents();
     } catch {
-      setMessage("Failed to create event");
+      setMessage(`Failed to ${editingId ? "update" : "create"} event`);
     } finally {
       setLoading(false);
     }
   }
 
+  function resetForm() {
+    setTitle("");
+    setDescription("");
+    setDate("");
+    setLumaLink("");
+    setBanner(null);
+    setEditingId(null);
+  }
+
+  function handleEdit(event: Event) {
+    setEditingId(event._id);
+    setTitle(event.title);
+    setDescription(event.description);
+    // Format date for datetime-local input (YYYY-MM-DDTHH:mm)
+    const d = new Date(event.date);
+    const tzOffset = d.getTimezoneOffset() * 60000; // offset in milliseconds
+    const localISOTime = new Date(d.getTime() - tzOffset).toISOString().slice(0, 16);
+    setDate(localISOTime);
+    setLumaLink(event.lumaLink || "");
+    setBanner(null); // Keep null to not re-upload unless changed
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   async function handleDelete(id: string) {
     if (!confirm("Delete this event?")) return;
-    await fetch("/api/events", {
+    await fetch(`/api/events?id=${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
     });
     fetchEvents();
   }
@@ -154,13 +177,24 @@ export default function EventsAdminPage() {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-3 text-sm bg-charcoal text-ivory hover:bg-charcoal/90 transition-colors disabled:opacity-50"
-        >
-          {loading ? "Creating..." : "Create Event"}
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-6 py-3 text-sm bg-charcoal text-ivory hover:bg-charcoal/90 transition-colors disabled:opacity-50"
+          >
+            {loading ? (editingId ? "Updating..." : "Creating...") : (editingId ? "Update Event" : "Create Event")}
+          </button>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="px-6 py-3 text-sm border border-charcoal/15 text-charcoal hover:bg-charcoal/5 transition-colors"
+            >
+              Cancel Edit
+            </button>
+          )}
+        </div>
         {message && <p className="text-sm text-charcoal/60">{message}</p>}
       </form>
 
@@ -187,12 +221,22 @@ export default function EventsAdminPage() {
                 {event.description}
               </p>
             </div>
-            <button
-              onClick={() => handleDelete(event._id)}
-              className="p-2 text-charcoal/40 hover:text-red-600 shrink-0 self-start"
-            >
-              <Trash2 size={16} />
-            </button>
+            <div className="flex flex-col gap-2 shrink-0 self-start">
+              <button
+                onClick={() => handleEdit(event)}
+                className="p-2 text-charcoal/40 hover:text-charcoal transition-colors"
+                title="Edit event"
+              >
+                <Edit size={16} />
+              </button>
+              <button
+                onClick={() => handleDelete(event._id)}
+                className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
+                title="Delete event"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
           </div>
         ))}
       </div>

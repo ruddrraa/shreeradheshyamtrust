@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { getYouTubeThumbnail } from "@/lib/utils";
 import type { Video } from "@/types";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 
 export default function VideosAdminPage() {
   const [videos, setVideos] = useState<Video[]>([]);
@@ -13,6 +13,7 @@ export default function VideosAdminPage() {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   async function fetchVideos() {
     const res = await fetch("/api/videos");
@@ -29,30 +30,48 @@ export default function VideosAdminPage() {
     setMessage("");
 
     try {
-      const res = await fetch("/api/videos", {
-        method: "POST",
+      const url = "/api/videos";
+      const method = editingId ? "PUT" : "POST";
+      const body = {
+        title,
+        youtubeUrl,
+        ...(editingId && { id: editingId }),
+      };
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, youtubeUrl }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) throw new Error("Failed");
-      setTitle("");
-      setYoutubeUrl("");
-      setMessage("Video added successfully");
+      resetForm();
+      setMessage(`Video ${editingId ? "updated" : "added"} successfully`);
       fetchVideos();
     } catch {
-      setMessage("Failed to add video");
+      setMessage(`Failed to ${editingId ? "update" : "add"} video`);
     } finally {
       setLoading(false);
     }
   }
 
+  function resetForm() {
+    setTitle("");
+    setYoutubeUrl("");
+    setEditingId(null);
+  }
+
+  function handleEdit(video: Video) {
+    setEditingId(video._id);
+    setTitle(video.title);
+    setYoutubeUrl(video.youtubeUrl);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   async function handleDelete(id: string) {
     if (!confirm("Delete this video?")) return;
-    await fetch("/api/videos", {
+    await fetch(`/api/videos?id=${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
     });
     fetchVideos();
   }
@@ -93,13 +112,24 @@ export default function VideosAdminPage() {
             className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-3 text-sm bg-charcoal text-ivory hover:bg-charcoal/90 transition-colors disabled:opacity-50"
-        >
-          {loading ? "Adding..." : "Add Video"}
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-6 py-3 text-sm bg-charcoal text-ivory hover:bg-charcoal/90 transition-colors disabled:opacity-50"
+          >
+            {loading ? (editingId ? "Updating..." : "Adding...") : (editingId ? "Update Video" : "Add Video")}
+          </button>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="px-6 py-3 text-sm border border-charcoal/15 text-charcoal hover:bg-charcoal/5 transition-colors"
+            >
+              Cancel Edit
+            </button>
+          )}
+        </div>
         {message && <p className="text-sm text-charcoal/60">{message}</p>}
       </form>
 
@@ -121,12 +151,22 @@ export default function VideosAdminPage() {
                   {video.youtubeUrl}
                 </p>
               </div>
-              <button
-                onClick={() => handleDelete(video._id)}
-                className="p-2 text-charcoal/40 hover:text-red-600 shrink-0"
-              >
-                <Trash2 size={16} />
-              </button>
+              <div className="flex flex-col gap-2 shrink-0">
+                <button
+                  onClick={() => handleEdit(video)}
+                  className="p-2 text-charcoal/40 hover:text-charcoal transition-colors"
+                  title="Edit video"
+                >
+                  <Edit size={16} />
+                </button>
+                <button
+                  onClick={() => handleDelete(video._id)}
+                  className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
+                  title="Delete video"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
             </div>
           </div>
         ))}

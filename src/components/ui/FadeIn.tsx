@@ -31,7 +31,7 @@ export function FadeIn({
       x: 0,
       y: 0,
       transition: {
-        duration: 0.7,
+        duration: 0.9,
         delay,
         ease: [0.22, 1, 0.36, 1],
       },

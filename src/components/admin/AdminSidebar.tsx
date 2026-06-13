@@ -11,6 +11,7 @@ import {
   Heart,
   Settings,
   LogOut,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ const links = [
   { href: "/admin/videos", label: "Videos", icon: Video },
   { href: "/admin/events", label: "Events", icon: Calendar },
   { href: "/admin/donations", label: "Donations", icon: Heart },
+  { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -27,12 +29,19 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-charcoal text-ivory min-h-screen p-6 flex flex-col">
+    <aside className="w-64 bg-charcoal text-ivory h-screen sticky top-0 p-6 flex flex-col overflow-y-auto">
       <div className="mb-10">
-        <Link href="/" className="font-heading text-lg text-gold">
-          Trust Admin
+        <Link href="/" className="flex flex-col gap-1 mb-2 group">
+          <span className="font-display text-xl text-ivory transition-colors group-hover:text-ivory">
+            Shree Radhe Shyam
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-gold font-medium transition-colors group-hover:text-gold-light">
+            Bhakti Sarover Trust
+          </span>
         </Link>
-        <p className="text-xs text-ivory/40 mt-1">Management Portal</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-ivory/30 mt-4 border-t border-ivory/10 pt-4">
+          Management Portal
+        </p>
       </div>
 
       <nav className="flex-1 space-y-1">

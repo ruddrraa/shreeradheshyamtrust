@@ -12,6 +12,8 @@ const DonationSchema = new Schema(
     donorEmail: String,
     isAnonymous: { type: Boolean, default: false },
     currency: { type: String, default: "INR" },
+    originalAmount: { type: Number },
+    originalCurrency: { type: String },
     razorpayPaymentId: String,
     razorpayOrderId: String,
   },
