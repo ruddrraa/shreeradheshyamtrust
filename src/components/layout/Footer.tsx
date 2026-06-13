@@ -62,17 +62,11 @@ export function Footer({
 
         <div className="grid gap-16 lg:grid-cols-12 mt-12">
           <div className="lg:col-span-4">
-            <p 
-              className="font-display text-4xl lg:text-5xl font-normal leading-[1.1] tracking-tight"
-              style={{
-                fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
-                color: typography?.heading?.color || undefined,
-              }}
-            >
-              Shree Radhe Shyam
-              <br />
-              <span className="text-gold">Bhakti Sarover Trust</span>
-            </p>
+            <img 
+              src="/Logo.png" 
+              alt="Shree Radhe Shyam Bhakti Sarover Trust" 
+              className="h-16 lg:h-20 w-auto object-contain brightness-0 invert opacity-90" 
+            />
             <p 
               className="mt-8 max-w-md text-sm leading-[1.85] text-white/55 font-light"
               style={{

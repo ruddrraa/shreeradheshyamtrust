@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { TypographyControl } from "@/components/admin/TypographyControl";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import type { SiteSettings, SectionTypography } from "@/types";
 
 export default function SettingsAdminPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showClearHistoryConfirm, setShowClearHistoryConfirm] = useState(false);
 
   useEffect(() => {
     fetch("/api/settings", { cache: "no-store" })
@@ -54,7 +56,7 @@ export default function SettingsAdminPage() {
   }
 
   async function handleClearHistory() {
-    if (!settings || !confirm("Are you sure you want to clear the color revision history? This cannot be undone.")) return;
+    if (!settings) return;
     
     setLoading(true);
     setMessage("Clearing history...");
@@ -101,6 +103,14 @@ export default function SettingsAdminPage() {
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={showClearHistoryConfirm}
+        onClose={() => setShowClearHistoryConfirm(false)}
+        onConfirm={handleClearHistory}
+        title="Clear Color History"
+        message="Are you sure you want to clear the color revision history? This will permanently delete all previously saved color palettes and cannot be undone."
+      />
+
       <AdminHeader
         title="Website Settings"
         description="Manage hero content, about section, pillars, contact info, and impact statistics"
@@ -589,7 +599,7 @@ export default function SettingsAdminPage() {
               </div>
               <button
                 type="button"
-                onClick={handleClearHistory}
+                onClick={() => setShowClearHistoryConfirm(true)}
                 disabled={loading}
                 className="px-4 py-2 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded transition-colors"
               >
@@ -637,7 +647,7 @@ export default function SettingsAdminPage() {
         )}
       </form>
 
-      <div className="fixed bottom-0 left-0 md:left-64 right-0 bg-white border-t border-charcoal/10 p-4 md:px-8 flex flex-col sm:flex-row items-center justify-between z-50">
+      <div className="fixed bottom-0 left-0 lg:left-64 right-0 bg-white border-t border-charcoal/10 p-4 md:px-8 flex flex-col sm:flex-row items-center justify-between z-30">
         <p className="text-sm font-medium text-green-700 mb-2 sm:mb-0">{message}</p>
         <button
           onClick={handleSubmit}

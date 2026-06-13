@@ -10,12 +10,14 @@ export function LoginContent() {
 
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center px-6">
-      <div className="max-w-md w-full text-center">
-        <p className="font-heading text-3xl text-ivory font-light">
+      <div className="max-w-md w-full text-center flex flex-col items-center">
+        <img 
+          src="/Logo.png" 
+          alt="Shree Radhe Shyam Bhakti Sarover Trust" 
+          className="h-20 w-auto object-contain mb-6 brightness-0 invert opacity-90" 
+        />
+        <p className="font-sans tracking-tight text-3xl text-ivory font-light">
           Admin Portal
-        </p>
-        <p className="mt-3 text-ivory/50 text-sm">
-          Shree Radhe Shyam Bhakti Sarover Trust
         </p>
 
         {error && (

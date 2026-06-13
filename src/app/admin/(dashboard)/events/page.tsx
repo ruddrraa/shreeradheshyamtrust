@@ -6,6 +6,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { formatDate } from "@/lib/utils";
 import type { Event } from "@/types";
 import { Trash2, Edit } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function EventsAdminPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -17,6 +18,7 @@ export default function EventsAdminPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   async function fetchEvents() {
     const res = await fetch("/api/events");
@@ -92,16 +94,25 @@ export default function EventsAdminPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this event?")) return;
-    await fetch(`/api/events?id=${id}`, {
+  async function handleDeleteConfirm() {
+    if (!deleteId) return;
+    await fetch(`/api/events?id=${deleteId}`, {
       method: "DELETE",
     });
+    setDeleteId(null);
     fetchEvents();
   }
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Event"
+        message="Are you sure you want to delete this event? This action cannot be undone."
+      />
+      
       <AdminHeader
         title="Event Management"
         description="Create and manage upcoming events and webinars"
@@ -230,7 +241,7 @@ export default function EventsAdminPage() {
                 <Edit size={16} />
               </button>
               <button
-                onClick={() => handleDelete(event._id)}
+                onClick={() => setDeleteId(event._id)}
                 className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
                 title="Delete event"
               >

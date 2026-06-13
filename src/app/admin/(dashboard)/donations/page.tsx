@@ -5,6 +5,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import type { Donation } from "@/types";
 import { Trash2, Edit } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 interface DonationData {
   donations: Donation[];
@@ -38,6 +39,7 @@ export default function DonationsAdminPage() {
   const [currency, setCurrency] = useState("INR");
   
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -154,11 +156,12 @@ export default function DonationsAdminPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this donation record?")) return;
-    await fetch(`/api/donations?id=${id}`, {
+  async function handleDeleteConfirm() {
+    if (!deleteId) return;
+    await fetch(`/api/donations?id=${deleteId}`, {
       method: "DELETE",
     });
+    setDeleteId(null);
     fetchDonations();
   }
 
@@ -175,6 +178,14 @@ export default function DonationsAdminPage() {
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Donation Record"
+        message="Are you sure you want to delete this donation record? This action cannot be undone and will affect your total analytics."
+      />
+      
       <AdminHeader
         title="Donation Management"
         description="View donations, analytics, and manually log offline donations"
@@ -397,7 +408,7 @@ export default function DonationsAdminPage() {
                         <Edit size={16} />
                       </button>
                       <button
-                        onClick={() => handleDelete(d._id)}
+                        onClick={() => setDeleteId(d._id)}
                         className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
                         title="Delete donation"
                       >

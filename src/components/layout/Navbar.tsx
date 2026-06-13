@@ -39,23 +39,15 @@ export function Navbar() {
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10">
-          <Link href="/" className="group flex flex-col">
-            <span
+          <Link href="/" className="group flex items-center">
+            <img 
+              src="/Logo.png" 
+              alt="Shree Radhe Shyam Bhakti Sarover Trust" 
               className={cn(
-                "font-display text-lg md:text-xl tracking-wide transition-colors duration-500",
-                scrolled ? "text-deep-brown" : "text-white"
-              )}
-            >
-              Shree Radhe Shyam
-            </span>
-            <span
-              className={cn(
-                "text-[9px] uppercase tracking-[0.28em] transition-colors duration-500 font-medium",
-                scrolled ? "text-muted" : "text-white/50"
-              )}
-            >
-              Bhakti Sarover Trust
-            </span>
+                "h-12 w-auto object-contain transition-all duration-500",
+                !scrolled && "brightness-0 invert opacity-90 hover:opacity-100"
+              )} 
+            />
           </Link>
 
           <nav className="hidden items-center gap-11 lg:flex">

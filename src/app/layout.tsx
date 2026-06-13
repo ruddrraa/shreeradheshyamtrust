@@ -59,6 +59,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
   },
+  icons: {
+    icon: "/logoicon.png",
+    shortcut: "/logoicon.png",
+    apple: "/logoicon.png",
+  },
 };
 
 export default async function RootLayout({

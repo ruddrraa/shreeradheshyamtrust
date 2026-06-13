@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import type { Testimonial } from "@/types";
 import { Trash2, CheckCircle, XCircle } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function TestimonialsAdminPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   async function fetchTestimonials() {
     const res = await fetch("/api/testimonials");
@@ -33,12 +35,13 @@ export default function TestimonialsAdminPage() {
     }
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this testimonial?")) return;
+  async function handleDeleteConfirm() {
+    if (!deleteId) return;
     try {
-      await fetch(`/api/testimonials?id=${id}`, {
+      await fetch(`/api/testimonials?id=${deleteId}`, {
         method: "DELETE",
       });
+      setDeleteId(null);
       fetchTestimonials();
     } catch (e) {
       console.error(e);
@@ -47,6 +50,14 @@ export default function TestimonialsAdminPage() {
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Testimonial"
+        message="Are you sure you want to delete this testimonial? This action cannot be undone."
+      />
+      
       <AdminHeader
         title="Testimonials Management"
         description="Review, approve, and manage devotee comments before they appear on the website."
@@ -105,7 +116,7 @@ export default function TestimonialsAdminPage() {
                   {t.isApproved ? "Unapprove (Hide)" : "Approve (Publish)"}
                 </button>
                 <button
-                  onClick={() => handleDelete(t._id)}
+                  onClick={() => setDeleteId(t._id)}
                   className="px-4 py-2 text-sm border border-red-600/20 text-red-600 hover:bg-red-50 transition-colors flex justify-center items-center gap-2"
                 >
                   <Trash2 size={16} /> Delete

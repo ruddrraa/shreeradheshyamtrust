@@ -6,6 +6,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { getYouTubeThumbnail } from "@/lib/utils";
 import type { Video } from "@/types";
 import { Trash2, Edit } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function VideosAdminPage() {
   const [videos, setVideos] = useState<Video[]>([]);
@@ -14,6 +15,8 @@ export default function VideosAdminPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   async function fetchVideos() {
     const res = await fetch("/api/videos");
@@ -68,16 +71,25 @@ export default function VideosAdminPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this video?")) return;
-    await fetch(`/api/videos?id=${id}`, {
+  async function handleDeleteConfirm() {
+    if (!deleteId) return;
+    await fetch(`/api/videos?id=${deleteId}`, {
       method: "DELETE",
     });
+    setDeleteId(null);
     fetchVideos();
   }
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Video"
+        message="Are you sure you want to delete this video? This action cannot be undone and it will be permanently removed from the website."
+      />
+      
       <AdminHeader
         title="Video Management"
         description="Add YouTube videos to display on the website"
@@ -160,7 +172,7 @@ export default function VideosAdminPage() {
                   <Edit size={16} />
                 </button>
                 <button
-                  onClick={() => handleDelete(video._id)}
+                  onClick={() => setDeleteId(video._id)}
                   className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
                   title="Delete video"
                 >

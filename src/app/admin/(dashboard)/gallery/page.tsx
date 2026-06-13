@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import type { GalleryImage, GalleryCategory } from "@/types";
 import { Trash2, Edit, ChevronLeft, ChevronRight } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 const categories: { value: GalleryCategory | "all"; label: string }[] = [
   { value: "all", label: "All Categories" },
@@ -21,6 +22,7 @@ export default function GalleryAdminPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   // Filters & Pagination state
   const [filterCategory, setFilterCategory] = useState<GalleryCategory | "all">("all");
@@ -95,11 +97,12 @@ export default function GalleryAdminPage() {
     setCaption("");
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm("Delete this image?")) return;
-    await fetch(`/api/gallery?id=${id}`, {
+  async function handleDeleteConfirm() {
+    if (!deleteId) return;
+    await fetch(`/api/gallery?id=${deleteId}`, {
       method: "DELETE",
     });
+    setDeleteId(null);
     fetchImages();
   }
 
@@ -130,6 +133,14 @@ export default function GalleryAdminPage() {
 
   return (
     <div>
+      <ConfirmModal
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Media"
+        message="Are you sure you want to delete this media item? It will be permanently removed from the gallery."
+      />
+      
       <AdminHeader
         title="Gallery Management"
         description="Upload and categorize gallery images"
@@ -274,7 +285,7 @@ export default function GalleryAdminPage() {
                   <Edit size={16} />
                 </button>
                 <button
-                  onClick={() => handleDelete(img._id)}
+                  onClick={() => setDeleteId(img._id)}
                   className="p-2 text-charcoal/40 hover:text-red-600 transition-colors"
                   title="Delete image"
                 >

@@ -6,7 +6,7 @@ interface AdminHeaderProps {
 export function AdminHeader({ title, description }: AdminHeaderProps) {
   return (
     <div className="mb-8">
-      <h1 className="font-heading text-3xl text-charcoal font-light">
+      <h1 className="font-sans tracking-tight text-3xl text-charcoal font-medium">
         {title}
       </h1>
       {description && (

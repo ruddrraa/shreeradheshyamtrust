@@ -1,12 +1,16 @@
 import { LegalPageLayout } from "@/components/ui/LegalPageLayout";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { getSettings } from "@/lib/data";
+import { deepMergeTypography } from "@/lib/utils";
 
 export const metadata = {
   title: "Terms and Conditions | Shree Radhe Shyam Bhakti Sarover Trust",
 };
 
-export default function TermsAndConditions() {
+export default async function TermsAndConditions() {
+  const settings = await getSettings();
+
   return (
     <>
       <Navbar />
@@ -56,7 +60,13 @@ export default function TermsAndConditions() {
           Any claim relating to the Shree Radhe Shyam Bhakti Sarover Trust website shall be governed by the laws of India, particularly the jurisdiction of West Bengal, without regard to its conflict of law provisions.
         </p>
       </LegalPageLayout>
-      <Footer />
+      <Footer
+        contactEmail={settings.contactEmail}
+        contactPhone={settings.contactPhone}
+        address={settings.address}
+        socialLinks={settings.socialLinks}
+        typography={deepMergeTypography(settings.typography?.global, settings.typography?.contact)}
+      />
     </>
   );
 }

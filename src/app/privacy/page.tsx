@@ -1,12 +1,16 @@
 import { LegalPageLayout } from "@/components/ui/LegalPageLayout";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { getSettings } from "@/lib/data";
+import { deepMergeTypography } from "@/lib/utils";
 
 export const metadata = {
   title: "Privacy Policy | Shree Radhe Shyam Bhakti Sarover Trust",
 };
 
-export default function PrivacyPolicy() {
+export default async function PrivacyPolicy() {
+  const settings = await getSettings();
+
   return (
     <>
       <Navbar />
@@ -56,7 +60,13 @@ export default function PrivacyPolicy() {
           If you have any questions regarding this Privacy Policy, you may contact us using the information provided in the footer of our website.
         </p>
       </LegalPageLayout>
-      <Footer />
+      <Footer
+        contactEmail={settings.contactEmail}
+        contactPhone={settings.contactPhone}
+        address={settings.address}
+        socialLinks={settings.socialLinks}
+        typography={deepMergeTypography(settings.typography?.global, settings.typography?.contact)}
+      />
     </>
   );
 }
