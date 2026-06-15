@@ -38,7 +38,7 @@ export function Vision({ sanskrit, subtitle, image, typography }: VisionProps) {
       >
         <SacredImage
           src={image}
-          alt="Our vision of devotion"
+          alt="Our vision of devotion - Shree Radhe Shyam Bhakti Sarover Trust"
           fill
           className="object-cover"
           sizes="100vw"

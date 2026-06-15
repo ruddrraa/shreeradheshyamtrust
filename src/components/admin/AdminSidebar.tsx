@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
@@ -58,9 +59,12 @@ export function AdminSidebar({
       <div className="mb-10 flex justify-between items-start">
         <div>
           <Link href="/" className="flex items-center mb-2 group">
-            <img 
+            <Image 
               src="/Logo.png" 
-              alt="Shree Radhe Shyam Bhakti Sarover Trust" 
+              alt="Shree Radhe Shyam Bhakti Sarover Trust Logo" 
+              width={200}
+              height={48}
+              priority
               className="h-12 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" 
             />
           </Link>

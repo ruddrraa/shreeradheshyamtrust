@@ -52,28 +52,62 @@ const marcellus = Marcellus({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://shreeradheshyambhaktisarovertrust.com'),
   title: {
-    default: "Shree Radhe Shyam Bhakti Sarover Trust",
+    default: "Shree Radhe Shyam Bhakti Sarover Trust | Gau Seva & Spiritual Organization in Kolkata",
     template: "%s | Shree Radhe Shyam Bhakti Sarover Trust",
   },
   description:
-    "Serving Gau Mata, Spreading Divine Love, and Inspiring a Life of Devotion. A non-profit spiritual and charitable trust dedicated to Gau Seva, Bhakti, and Spiritual Enlightenment in Howrah, Kolkata.",
+    "A non-profit spiritual and charitable trust dedicated to Gau Mata Seva, Shri Radha Krishna Bhakti, Naam Sankirtan, and Sanatan Dharma in Howrah, Kolkata.",
   keywords: [
-    "Shree Radhe Shyam Bhakti Sarover Trust",
-    "Gau Seva",
+    "Gau Seva Trust",
+    "Gau Mata Seva",
+    "Cow Protection Trust India",
+    "Shri Radha Krishna Bhakti",
     "Naam Sankirtan",
-    "Radha Krishna",
-    "Spiritual Trust",
-    "Howrah Kolkata",
-    "Bhakti",
-    "Sanatan Dharma",
+    "Sanatan Dharma Trust",
+    "Spiritual Trust West Bengal",
+    "Spiritual Organization Kolkata",
+    "Bhajan Kirtan Programs",
+    "Radha Krishna Devotion",
+    "Gau Daan",
+    "Spiritual NGO India",
+    "Religious Charitable Trust",
+    "Trust in Howrah",
   ],
+  authors: [{ name: "Shree Radhe Shyam Bhakti Sarover Trust" }],
+  creator: "Shree Radhe Shyam Bhakti Sarover Trust",
+  publisher: "Shree Radhe Shyam Bhakti Sarover Trust",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "Shree Radhe Shyam Bhakti Sarover Trust",
     description:
-      "Serving Gau Mata, Spreading Divine Love, and Inspiring a Life of Devotion.",
-    type: "website",
+      "Serving Gau Mata, Spreading Divine Love, and Inspiring a Life of Devotion. Join us in our spiritual and charitable initiatives in Howrah, Kolkata.",
+    url: 'https://shreeradheshyambhaktisarovertrust.com',
+    siteName: 'Shree Radhe Shyam Bhakti Sarover Trust',
+    images: [
+      {
+        url: '/Logo.png',
+        width: 800,
+        height: 600,
+        alt: 'Shree Radhe Shyam Bhakti Sarover Trust Logo',
+      },
+    ],
     locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Shree Radhe Shyam Bhakti Sarover Trust",
+    description: "Serving Gau Mata, Spreading Divine Love, and Inspiring a Life of Devotion in Kolkata.",
+    images: ['/Logo.png'],
   },
   icons: {
     icon: "/logoicon.png",

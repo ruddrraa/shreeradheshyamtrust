@@ -47,7 +47,7 @@ export function Pillars({ pillars, typography }: PillarProps) {
               <div className="relative aspect-[3/4] overflow-hidden">
                 <SacredImage
                   src={pillar.image}
-                  alt={pillar.title}
+                  alt={`${pillar.title} - Shree Radhe Shyam Bhakti Sarover Trust Seva Pillar`}
                   fill
                   className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.05]"
                   sizes="(max-width: 768px) 100vw, 33vw"

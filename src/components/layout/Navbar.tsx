@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -40,9 +41,12 @@ export function Navbar() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10">
           <Link href="/" className="group flex items-center">
-            <img 
+            <Image 
               src="/Logo.png" 
-              alt="Shree Radhe Shyam Bhakti Sarover Trust" 
+              alt="Shree Radhe Shyam Bhakti Sarover Trust Logo" 
+              width={240}
+              height={80}
+              priority
               className={cn(
                 "h-16 lg:h-20 w-auto object-contain transition-all duration-500",
                 !scrolled && "brightness-0 invert opacity-90 hover:opacity-100"

@@ -9,6 +9,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { getYouTubeId, getYouTubeThumbnail } from "@/lib/utils";
 import type { Video } from "@/types";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 interface VideosProps {
   videos: Video[];
@@ -38,6 +39,15 @@ export function Videos({ videos, typography }: VideosProps) {
 
             return (
               <FadeIn key={video._id} delay={i * 0.12}>
+                <StructuredData data={{
+                  "@context": "https://schema.org",
+                  "@type": "VideoObject",
+                  name: video.title,
+                  description: `${video.title} - Spiritual discourse and Bhajan by Shree Radhe Shyam Bhakti Sarover Trust.`,
+                  thumbnailUrl: thumbnail,
+                  uploadDate: video.createdAt || new Date().toISOString(),
+                  embedUrl: videoId ? `https://www.youtube.com/embed/${videoId}` : video.youtubeUrl
+                }} />
                 <button
                   onClick={() => {
                     if (videoId) setSelectedVideoId(videoId);

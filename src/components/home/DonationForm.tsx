@@ -200,6 +200,7 @@ export function DonationForm() {
             placeholder="Enter amount (INR)"
             value={customAmount}
             onChange={(e) => setCustomAmount(e.target.value)}
+            aria-label="Enter custom donation amount in INR"
             className="w-full bg-surface border border-deep-brown/10 rounded-xl px-5 py-4 text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-gold transition-colors"
           />
         </div>
@@ -219,6 +220,7 @@ export function DonationForm() {
           value={donorName}
           onChange={(e) => setDonorName(e.target.value)}
           autoComplete="name"
+          aria-label="Donor Name"
           className="w-full bg-surface border border-deep-brown/10 rounded-xl px-5 py-4 text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-gold transition-colors"
         />
         <input
@@ -228,6 +230,7 @@ export function DonationForm() {
           value={donorEmail}
           onChange={(e) => setDonorEmail(e.target.value)}
           autoComplete="email"
+          aria-label="Donor Email"
           className="w-full bg-surface border border-deep-brown/10 rounded-xl px-5 py-4 text-charcoal placeholder:text-muted/60 focus:outline-none focus:border-gold transition-colors"
         />
         <label className="flex items-center gap-3 text-sm text-muted cursor-pointer">

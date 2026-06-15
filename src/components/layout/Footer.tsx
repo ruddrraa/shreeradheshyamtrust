@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 
 interface FooterProps {
@@ -62,9 +63,11 @@ export function Footer({
 
         <div className="grid gap-16 lg:grid-cols-12 mt-12">
           <div className="lg:col-span-4">
-            <img 
+            <Image 
               src="/Logo.png" 
-              alt="Shree Radhe Shyam Bhakti Sarover Trust" 
+              alt="Shree Radhe Shyam Bhakti Sarover Trust Logo" 
+              width={300}
+              height={80}
               className="h-16 lg:h-20 w-auto object-contain brightness-0 invert opacity-90" 
             />
             <p 

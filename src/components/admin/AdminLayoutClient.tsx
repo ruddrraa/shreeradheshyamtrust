@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AdminSidebar } from "./AdminSidebar";
 import { Menu } from "lucide-react";
 
@@ -12,9 +13,11 @@ export function AdminLayoutClient({ children }: { children: React.ReactNode }) {
       {/* Mobile Top Bar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-charcoal z-40 flex items-center justify-between px-4 shadow-md">
         <div className="flex items-center gap-3">
-          <img 
+          <Image 
             src="/Logo.png" 
             alt="Logo" 
+            width={120}
+            height={32}
             className="h-8 w-auto object-contain brightness-0 invert" 
           />
           <span className="text-ivory font-sans tracking-tight font-medium">Admin Portal</span>

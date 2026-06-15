@@ -51,7 +51,7 @@ export function About({ about, typography }: AboutProps) {
               <div className="museum-frame relative aspect-[16/11] overflow-hidden">
                 <SacredImage
                   src={about.image}
-                  alt={about.title}
+                  alt={`${about.title} - Shree Radhe Shyam Bhakti Sarover Trust`}
                   fill
                   className="object-cover transition-transform duration-[1.4s] hover:scale-[1.03]"
                   sizes="(max-width: 1024px) 100vw, 55vw"

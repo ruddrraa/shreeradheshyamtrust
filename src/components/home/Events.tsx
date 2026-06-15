@@ -8,6 +8,7 @@ import { SacredImage } from "@/components/ui/SacredImage";
 import { EventCountdown } from "@/components/home/EventCountdown";
 import { formatDate } from "@/lib/utils";
 import type { Event } from "@/types";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 interface EventsProps {
   events: Event[];
@@ -37,6 +38,32 @@ export function Events({ events, typography }: EventsProps) {
 
             return (
               <FadeIn key={event._id} delay={i * 0.14}>
+                <StructuredData data={{
+                  "@context": "https://schema.org",
+                  "@type": "Event",
+                  name: event.title,
+                  startDate: event.date,
+                  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+                  eventStatus: "https://schema.org/EventScheduled",
+                  location: {
+                    "@type": "Place",
+                    name: "Shree Radhe Shyam Bhakti Sarover Trust",
+                    address: {
+                      "@type": "PostalAddress",
+                      addressLocality: "Howrah",
+                      addressRegion: "West Bengal",
+                      addressCountry: "IN"
+                    }
+                  },
+                  image: event.banner,
+                  description: event.description,
+                  url: event.lumaLink || "https://shreeradheshyambhaktisarovertrust.com/#events",
+                  organizer: {
+                    "@type": "NGO",
+                    name: "Shree Radhe Shyam Bhakti Sarover Trust",
+                    url: "https://shreeradheshyambhaktisarovertrust.com"
+                  }
+                }} />
                 <article className="luxury-card overflow-hidden grid lg:grid-cols-2 group">
                   <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[460px] overflow-hidden">
                     <SacredImage
