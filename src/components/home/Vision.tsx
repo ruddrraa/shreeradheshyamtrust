@@ -33,7 +33,7 @@ export function Vision({ sanskrit, subtitle, image, typography }: VisionProps) {
       className="relative py-40 lg:py-64 overflow-hidden bg-maroon"
     >
       <motion.div
-        style={{ y, opacity }}
+        style={{ y, opacity, willChange: "transform, opacity" }}
         className="absolute inset-0"
       >
         <SacredImage
@@ -74,6 +74,7 @@ export function Vision({ sanskrit, subtitle, image, typography }: VisionProps) {
           style={{
             fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
             color: typography?.heading?.color || undefined,
+            fontFamily: typography?.heading?.fontFamily || undefined,
           }}
         >
           {sanskrit}
@@ -89,6 +90,7 @@ export function Vision({ sanskrit, subtitle, image, typography }: VisionProps) {
             style={{
               fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
               color: typography?.subheading?.color || undefined,
+              fontFamily: typography?.subheading?.fontFamily || undefined,
             }}
           >
             {subtitle}

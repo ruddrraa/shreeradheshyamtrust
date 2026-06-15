@@ -55,6 +55,8 @@ export const defaultSettings: Omit<SiteSettings, "_id"> = {
     pillars: {},
     vision: {},
     contact: {},
+    videos: {},
+    events: {},
   },
   impactStats: {
     gauSeva: 150,

@@ -38,7 +38,7 @@ export default async function HomePage() {
           subtitle={settings.heroSubtitle}
           typography={deepMergeTypography(settings.typography?.global, settings.typography?.hero)}
         />
-        <Impact stats={settings.impactStats} />
+        <Impact stats={settings.impactStats || { gauSeva: 0, spiritualPrograms: 0, sankirtanGatherings: 0, devoteesReached: 0 }} />
         <About 
           about={{
             title: settings.aboutTitle,
@@ -55,14 +55,15 @@ export default async function HomePage() {
           image={settings.visionImage}
           typography={deepMergeTypography(settings.typography?.global, settings.typography?.vision)}
         />
-        <Gallery images={gallery} />
-        <Videos videos={videos} />
-        <Events events={events} />
+        <Gallery images={gallery} typography={settings.typography?.global} />
+        <Videos videos={videos} typography={deepMergeTypography(settings.typography?.global, settings.typography?.videos)} />
+        <Events events={events} typography={deepMergeTypography(settings.typography?.global, settings.typography?.events)} />
         <DonationSection
           donations={donationData.donations}
           totalAmount={donationData.totalAmount}
+          typography={settings.typography?.global}
         />
-        <Testimonials />
+        <Testimonials typography={settings.typography?.global} />
       </main>
       <Footer
         contactEmail={settings.contactEmail}

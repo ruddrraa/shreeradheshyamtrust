@@ -4,6 +4,7 @@ const TypographyElementSchema = new Schema(
   {
     fontSize: Number,
     color: String,
+    fontFamily: String,
   },
   { _id: false }
 );
@@ -86,6 +87,8 @@ const SettingsSchema = new Schema(
       pillars: SectionTypographySchema,
       vision: SectionTypographySchema,
       contact: SectionTypographySchema,
+      videos: SectionTypographySchema,
+      events: SectionTypographySchema,
     },
     colorHistory: {
       type: [
@@ -108,7 +111,7 @@ const SettingsSchema = new Schema(
       devoteesReached: { type: Number, default: 5000 },
     },
   },
-  { timestamps: true }
+  { timestamps: true, strict: false }
 );
 
-export default models.Settings || mongoose.model("Settings", SettingsSchema);
+export default mongoose.models.Settings || mongoose.model("Settings", SettingsSchema);

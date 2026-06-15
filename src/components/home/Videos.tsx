@@ -12,9 +12,10 @@ import type { Video } from "@/types";
 
 interface VideosProps {
   videos: Video[];
+  typography?: import("@/types").SectionTypography;
 }
 
-export function Videos({ videos }: VideosProps) {
+export function Videos({ videos, typography }: VideosProps) {
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
   if (videos.length === 0) return null;
@@ -26,6 +27,7 @@ export function Videos({ videos }: VideosProps) {
           label="Watch & Reflect"
           title="Spiritual Videos"
           subtitle="Satsang recordings, bhajans, and divine discourses from our gatherings."
+          typography={typography}
         />
 
         <div className="mt-24 grid sm:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -63,11 +65,25 @@ export function Videos({ videos }: VideosProps) {
                       </div>
                     </div>
                   </div>
-                  <h3 className="mt-7 font-heading text-2xl text-deep-brown font-light group-hover:text-gold transition-colors duration-500">
+                  <h3 
+                    className="mt-7 font-heading text-2xl text-deep-brown font-light group-hover:text-gold transition-colors duration-500"
+                    style={{
+                      fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
+                      color: typography?.heading?.color || undefined,
+                      fontFamily: typography?.heading?.fontFamily || undefined,
+                    }}
+                  >
                     {video.title}
                   </h3>
                   {videoId && (
-                    <p className="mt-2 text-[10px] text-muted uppercase tracking-[0.22em] font-medium">
+                    <p 
+                      className="mt-2 text-[10px] text-muted uppercase tracking-[0.22em] font-medium"
+                      style={{
+                        fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
+                        color: typography?.subheading?.color || undefined,
+                        fontFamily: typography?.subheading?.fontFamily || undefined,
+                      }}
+                    >
                       Watch Now
                     </p>
                   )}

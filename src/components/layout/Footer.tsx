@@ -72,6 +72,7 @@ export function Footer({
               style={{
                 fontSize: typography?.body?.fontSize ? `${typography.body.fontSize}px` : undefined,
                 color: typography?.body?.color || undefined,
+                fontFamily: typography?.body?.fontFamily || undefined,
               }}
             >
               Serving Gau Mata, Spreading Divine Love, and Inspiring a Life of
@@ -88,11 +89,11 @@ export function Footer({
             </h4>
             <ul className="space-y-4 text-sm text-white/60 font-light">
               {[
-                { href: "#about", label: "About" },
-                { href: "#pillars", label: "Our Seva" },
-                { href: "#gallery", label: "Gallery" },
-                { href: "#events", label: "Events" },
-                { href: "#donate", label: "Support" },
+                { href: "/#about", label: "About" },
+                { href: "/#pillars", label: "Our Seva" },
+                { href: "/#gallery", label: "Gallery" },
+                { href: "/#events", label: "Events" },
+                { href: "/#donate", label: "Support" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
@@ -115,6 +116,7 @@ export function Footer({
                 { href: "/privacy", label: "Privacy Policy" },
                 { href: "/terms", label: "Terms & Conditions" },
                 { href: "/refund", label: "Refund Policy" },
+                { href: "/developer", label: "Developer Contact" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
@@ -211,7 +213,14 @@ export function Footer({
               Trustees: Mrs. Neha Rai, Mrs. Hira Rai, Mr. Rajiv Kumar Upadhyay
             </p>
           </div>
-          <p className="md:text-right">© {currentYear} Shree Radhe Shyam Bhakti Sarover Trust</p>
+          <div className="md:text-right space-y-1.5">
+            <p>© {currentYear} Shree Radhe Shyam Bhakti Sarover Trust</p>
+            <p>
+              <Link href="/developer" className="transition-colors duration-400 hover:text-gold-light">
+                Designed & Developed by Rudrraaa
+              </Link>
+            </p>
+          </div>
         </div>
       </Container>
     </footer>

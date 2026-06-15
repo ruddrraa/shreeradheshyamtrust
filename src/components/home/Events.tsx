@@ -11,9 +11,10 @@ import type { Event } from "@/types";
 
 interface EventsProps {
   events: Event[];
+  typography?: import("@/types").SectionTypography;
 }
 
-export function Events({ events }: EventsProps) {
+export function Events({ events, typography }: EventsProps) {
   const upcoming = events
     .filter((e) => new Date(e.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -27,6 +28,7 @@ export function Events({ events }: EventsProps) {
           label="Join Us"
           title="Events & Gatherings"
           subtitle="Upcoming satsangs, sankirtan programs, and spiritual events."
+          typography={typography}
         />
 
         <div className="mt-24 space-y-20 lg:space-y-28">
@@ -47,13 +49,34 @@ export function Events({ events }: EventsProps) {
                   </div>
 
                   <div className="p-11 lg:p-16 flex flex-col justify-center">
-                    <time className="text-[10px] uppercase tracking-[0.32em] text-gold font-medium">
+                    <time 
+                      className="text-[10px] uppercase tracking-[0.32em] text-gold font-medium"
+                      style={{
+                        fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
+                        color: typography?.subheading?.color || undefined,
+                        fontFamily: typography?.subheading?.fontFamily || undefined,
+                      }}
+                    >
                       {formatDate(event.date)}
                     </time>
-                    <h3 className="mt-5 font-display text-3xl md:text-4xl lg:text-5xl font-normal text-deep-brown leading-[1.1] tracking-[-0.02em]">
+                    <h3 
+                      className="mt-5 font-display text-3xl md:text-4xl lg:text-5xl font-normal text-deep-brown leading-[1.1] tracking-[-0.02em]"
+                      style={{
+                        fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
+                        color: typography?.heading?.color || undefined,
+                        fontFamily: typography?.heading?.fontFamily || undefined,
+                      }}
+                    >
                       {event.title}
                     </h3>
-                    <p className="mt-7 text-muted leading-[1.8] font-light text-lg">
+                    <p 
+                      className="mt-7 text-muted leading-[1.8] font-light text-lg"
+                      style={{
+                        fontSize: typography?.body?.fontSize ? `${typography.body.fontSize}px` : undefined,
+                        color: typography?.body?.color || undefined,
+                        fontFamily: typography?.body?.fontFamily || undefined,
+                      }}
+                    >
                       {event.description}
                     </p>
 

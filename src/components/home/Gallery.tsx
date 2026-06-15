@@ -19,9 +19,10 @@ const categories: { value: GalleryCategory | "all"; label: string }[] = [
 
 interface GalleryProps {
   images: GalleryImage[];
+  typography?: import("@/types").SectionTypography;
 }
 
-export function Gallery({ images }: GalleryProps) {
+export function Gallery({ images, typography }: GalleryProps) {
   const [filter, setFilter] = useState<GalleryCategory | "all">("all");
   const [selected, setSelected] = useState<GalleryImage | null>(null);
 
@@ -35,6 +36,7 @@ export function Gallery({ images }: GalleryProps) {
           label="Moments of Grace"
           title="Gallery"
           subtitle="Sacred glimpses from our seva, sankirtan, and spiritual gatherings."
+          typography={typography}
         />
 
         <div className="mt-16 flex flex-wrap justify-center gap-3">

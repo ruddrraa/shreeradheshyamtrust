@@ -19,6 +19,7 @@ export default function TestimonialsAdminPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTestimonials();
   }, []);
 
@@ -97,7 +98,7 @@ export default function TestimonialsAdminPage() {
                   </span>
                 </div>
                 <p className="text-sm text-charcoal/70 leading-relaxed italic border-l-2 border-gold/30 pl-3">
-                  "{t.quote}"
+                  &quot;{t.quote}&quot;
                 </p>
                 <p className="text-xs text-charcoal/30 mt-3">
                   Submitted: {new Date(t.createdAt).toLocaleDateString()}

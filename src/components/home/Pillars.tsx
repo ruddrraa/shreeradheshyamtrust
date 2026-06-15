@@ -27,6 +27,7 @@ export function Pillars({ pillars, typography }: PillarProps) {
           label="Our Sacred Work"
           title="Three Pillars of Devotion"
           subtitle="Every initiative flows from our commitment to Gau Seva, spiritual wisdom, and the divine names of Shri Radha Krishna."
+          typography={typography}
         />
 
         <div className="mt-24 grid md:grid-cols-3 gap-10 lg:gap-12">
@@ -59,6 +60,7 @@ export function Pillars({ pillars, typography }: PillarProps) {
                     style={{
                       fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
                       color: typography?.subheading?.color || undefined,
+                      fontFamily: typography?.subheading?.fontFamily || undefined,
                     }}
                   >
                     {pillar.subtitle}
@@ -68,6 +70,7 @@ export function Pillars({ pillars, typography }: PillarProps) {
                     style={{
                       fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
                       color: typography?.heading?.color || undefined,
+                      fontFamily: typography?.heading?.fontFamily || undefined,
                     }}
                   >
                     {pillar.title}
@@ -77,6 +80,7 @@ export function Pillars({ pillars, typography }: PillarProps) {
                     style={{
                       fontSize: typography?.body?.fontSize ? `${typography.body.fontSize}px` : undefined,
                       color: typography?.body?.color || undefined,
+                      fontFamily: typography?.body?.fontFamily || undefined,
                     }}
                   >
                     {pillar.description}

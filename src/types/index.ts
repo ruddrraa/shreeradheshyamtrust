@@ -55,6 +55,7 @@ export interface Donation {
 export type TypographySetting = {
   fontSize?: number;
   color?: string;
+  fontFamily?: string;
 };
 
 export type SectionTypography = {
@@ -109,6 +110,8 @@ export interface SiteSettings {
     pillars?: SectionTypography;
     vision?: SectionTypography;
     contact?: SectionTypography;
+    videos?: SectionTypography;
+    events?: SectionTypography;
   };
   colorHistory?: {
     themeBackground?: string;
@@ -116,6 +119,7 @@ export interface SiteSettings {
     themePrimary?: string;
     themeAccent?: string;
     themeText?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     typography?: any;
     savedAt: string;
   }[];

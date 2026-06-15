@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import type { SectionTypography } from "@/types";
 
 interface SectionHeaderProps {
   label?: string;
@@ -10,6 +11,7 @@ interface SectionHeaderProps {
   align?: "left" | "center";
   className?: string;
   light?: boolean;
+  typography?: SectionTypography;
 }
 
 export function SectionHeader({
@@ -19,6 +21,7 @@ export function SectionHeader({
   align = "center",
   className,
   light = false,
+  typography,
 }: SectionHeaderProps) {
   return (
     <motion.div
@@ -34,7 +37,14 @@ export function SectionHeader({
     >
       {label && (
         <>
-          <p className="text-[11px] uppercase tracking-[0.38em] mb-5 font-medium text-gold">
+          <p 
+            className="text-[11px] uppercase tracking-[0.38em] mb-5 font-medium text-gold"
+            style={{
+              fontSize: typography?.overhead?.fontSize ? `${typography.overhead.fontSize}px` : undefined,
+              color: typography?.overhead?.color || undefined,
+              fontFamily: typography?.overhead?.fontFamily || undefined,
+            }}
+          >
             {label}
           </p>
           {align === "center" && (
@@ -47,6 +57,11 @@ export function SectionHeader({
           "font-display text-[2.75rem] md:text-5xl lg:text-6xl xl:text-[4.5rem] font-normal leading-[1.06] tracking-[-0.02em]",
           light ? "text-white" : "text-deep-brown"
         )}
+        style={{
+          fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
+          color: typography?.heading?.color || undefined,
+          fontFamily: typography?.heading?.fontFamily || undefined,
+        }}
       >
         {title}
       </h2>
@@ -57,6 +72,11 @@ export function SectionHeader({
             align === "center" && "mx-auto",
             light ? "text-white/72" : "text-muted"
           )}
+          style={{
+            fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
+            color: typography?.subheading?.color || undefined,
+            fontFamily: typography?.subheading?.fontFamily || undefined,
+          }}
         >
           {subtitle}
         </p>

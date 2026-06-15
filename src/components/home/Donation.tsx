@@ -10,11 +10,13 @@ import type { Donation } from "@/types";
 interface DonationSectionProps {
   donations: Donation[];
   totalAmount: number;
+  typography?: import("@/types").SectionTypography;
 }
 
 export function DonationSection({
   donations,
   totalAmount,
+  typography,
 }: DonationSectionProps) {
   const recentDonations = donations.slice(0, 5);
 
@@ -25,6 +27,7 @@ export function DonationSection({
           label="Support Our Mission"
           title="Offer Your Seva"
           subtitle="Your contribution sustains Gau Mata protection, spiritual programs, and sankirtan gatherings. Every offering is an act of sacred devotion — not merely a transaction."
+          typography={typography}
         />
 
         <div className="mt-24 grid lg:grid-cols-12 gap-12 lg:gap-16">

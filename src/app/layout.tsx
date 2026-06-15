@@ -4,6 +4,8 @@ import {
   Cormorant_Garamond,
   Inter,
   Noto_Serif_Devanagari,
+  Yatra_One,
+  Marcellus,
 } from "next/font/google";
 import "./globals.css";
 import { getSettings } from "@/lib/data";
@@ -32,6 +34,20 @@ const notoDevanagari = Noto_Serif_Devanagari({
   variable: "--font-noto-devanagari",
   subsets: ["devanagari"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const yatraOne = Yatra_One({
+  variable: "--font-yatra",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const marcellus = Marcellus({
+  variable: "--font-marcellus",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -76,7 +92,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} ${notoDevanagari.variable} h-full antialiased`}
+      className={`${bodoni.variable} ${cormorant.variable} ${inter.variable} ${notoDevanagari.variable} ${yatraOne.variable} ${marcellus.variable} h-full antialiased`}
     >
       <head>
         <style dangerouslySetInnerHTML={{ __html: `

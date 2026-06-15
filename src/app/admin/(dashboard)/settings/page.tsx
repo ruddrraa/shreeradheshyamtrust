@@ -490,6 +490,34 @@ export default function SettingsAdminPage() {
         </section>
 
         <section className="p-6 bg-white border border-charcoal/5 space-y-4">
+          <h2 className="font-heading text-lg text-charcoal">Spiritual Videos</h2>
+          <TypographyControl
+            label="Videos"
+            value={settings.typography?.videos}
+            onChange={(val) =>
+              setSettings({
+                ...settings,
+                typography: { ...(settings.typography || {}), videos: val },
+              })
+            }
+          />
+        </section>
+
+        <section className="p-6 bg-white border border-charcoal/5 space-y-4">
+          <h2 className="font-heading text-lg text-charcoal">Events & Gatherings</h2>
+          <TypographyControl
+            label="Events"
+            value={settings.typography?.events}
+            onChange={(val) =>
+              setSettings({
+                ...settings,
+                typography: { ...(settings.typography || {}), events: val },
+              })
+            }
+          />
+        </section>
+
+        <section className="p-6 bg-white border border-charcoal/5 space-y-4">
           <h2 className="font-heading text-lg text-charcoal">Contact</h2>
           {(
             [
@@ -577,7 +605,7 @@ export default function SettingsAdminPage() {
                   setSettings({
                     ...settings,
                     impactStats: {
-                      ...(settings.impactStats || {}),
+                      ...(settings.impactStats || { gauSeva: 0, spiritualPrograms: 0, sankirtanGatherings: 0, devoteesReached: 0 }),
                       [key]: Number(e.target.value),
                     },
                   })

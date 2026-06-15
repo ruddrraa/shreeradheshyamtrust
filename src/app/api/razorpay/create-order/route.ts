@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/lib/mongodb";
 import { getRazorpayInstance } from "@/lib/razorpay";
-import Donation from "@/models/Donation";
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,10 +21,11 @@ export async function POST(req: NextRequest) {
         currency: "INR",
         receipt: `donation_${Date.now()}`,
       });
-    } catch (rzpError: any) {
+    } catch (rzpError: unknown) {
       console.error("Razorpay Error:", rzpError);
       return NextResponse.json(
-        { error: rzpError?.error?.description || rzpError?.message || "Invalid API key or Razorpay service error." },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        { error: (rzpError as any)?.error?.description || (rzpError as any)?.message || "Invalid API key or Razorpay service error." },
         { status: 400 }
       );
     }

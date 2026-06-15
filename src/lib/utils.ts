@@ -41,7 +41,9 @@ export function getYouTubeThumbnail(url: string): string {
 }
 
 export function deepMergeTypography(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   base: Record<string, any> = {},
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   override: Record<string, any> = {}
 ) {
   const result = { ...base };

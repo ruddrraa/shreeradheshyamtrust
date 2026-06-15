@@ -6,7 +6,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FadeIn } from "@/components/ui/FadeIn";
 import type { Testimonial } from "@/types";
 
-export function Testimonials() {
+export function Testimonials({ typography }: { typography?: import("@/types").SectionTypography }) {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,6 +59,7 @@ export function Testimonials() {
           label="Voices of Devotion"
           title="What Devotees Say"
           subtitle="Stories of transformation through seva, bhakti, and spiritual fellowship."
+          typography={typography}
         />
 
         {testimonials.length > 0 && (

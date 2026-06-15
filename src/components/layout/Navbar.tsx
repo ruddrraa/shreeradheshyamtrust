@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 
 const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#pillars", label: "Our Seva" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#events", label: "Events" },
-  { href: "#donate", label: "Support" },
+  { href: "/#about", label: "About" },
+  { href: "/#pillars", label: "Our Seva" },
+  { href: "/#gallery", label: "Gallery" },
+  { href: "/#events", label: "Events" },
+  { href: "/#donate", label: "Support" },
 ];
 
 export function Navbar() {
@@ -66,7 +66,7 @@ export function Navbar() {
                 <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all duration-400 group-hover:w-full" />
               </Link>
             ))}
-            <Button href="#donate" variant="primary" size="sm">
+            <Button href="/#donate" variant="primary" size="sm">
               Join Seva
             </Button>
           </nav>
@@ -122,7 +122,7 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                <Button href="#donate" variant="primary" className="mt-8 w-fit">
+                <Button href="/#donate" variant="primary" className="mt-8 w-fit" onClick={() => setMobileOpen(false)}>
                   Join Seva
                 </Button>
               </nav>

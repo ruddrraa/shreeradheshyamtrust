@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 export function LoginContent() {
@@ -37,12 +38,12 @@ export function LoginContent() {
           </Button>
         </div>
 
-        <a
+        <Link
           href="/"
           className="inline-block mt-8 text-xs text-ivory/40 hover:text-gold transition-colors"
         >
           ← Back to website
-        </a>
+        </Link>
       </div>
     </div>
   );

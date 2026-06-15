@@ -30,7 +30,7 @@ export function Hero({ image, title, subtitle, typography }: HeroProps) {
       className="relative h-screen min-h-[100dvh] overflow-hidden hero-grain"
     >
       <motion.div
-        style={{ y, scale }}
+        style={{ y, scale, willChange: "transform" }}
         className="absolute inset-0"
       >
         <SacredImage
@@ -61,7 +61,7 @@ export function Hero({ image, title, subtitle, typography }: HeroProps) {
       </motion.div>
 
       <motion.div
-        style={{ opacity }}
+        style={{ opacity, willChange: "opacity" }}
         className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
       >
         <motion.p
@@ -72,6 +72,7 @@ export function Hero({ image, title, subtitle, typography }: HeroProps) {
           style={{
             color: typography?.overhead?.color || "#c2a15e", // gold-light
             fontSize: typography?.overhead?.fontSize ? `${typography.overhead.fontSize}px` : undefined,
+            fontFamily: typography?.overhead?.fontFamily || undefined,
           }}
         >
           Dedicated to Seva, Bhakti & Spiritual Enlightenment
@@ -85,6 +86,7 @@ export function Hero({ image, title, subtitle, typography }: HeroProps) {
           style={{
             fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
             color: typography?.heading?.color || undefined,
+            fontFamily: typography?.heading?.fontFamily || undefined,
           }}
         >
           {title.includes("Bhakti Sarover Trust") ? (
@@ -105,6 +107,7 @@ export function Hero({ image, title, subtitle, typography }: HeroProps) {
           style={{
             fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
             color: typography?.subheading?.color || undefined,
+            fontFamily: typography?.subheading?.fontFamily || undefined,
           }}
         >
           {subtitle}

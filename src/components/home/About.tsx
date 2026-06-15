@@ -28,6 +28,7 @@ export function About({ about, typography }: AboutProps) {
               style={{
                 fontSize: typography?.subheading?.fontSize ? `${typography.subheading.fontSize}px` : undefined,
                 color: typography?.subheading?.color || undefined,
+                fontFamily: typography?.subheading?.fontFamily || undefined,
               }}
             >
               {about.subtitle}
@@ -38,6 +39,7 @@ export function About({ about, typography }: AboutProps) {
               style={{
                 fontSize: typography?.heading?.fontSize ? `${typography.heading.fontSize}px` : undefined,
                 color: typography?.heading?.color || undefined,
+                fontFamily: typography?.heading?.fontFamily || undefined,
               }}
             >
               {about.title}
@@ -69,6 +71,7 @@ export function About({ about, typography }: AboutProps) {
                         style={{
                           fontSize: typography?.body?.fontSize ? `${typography.body.fontSize}px` : undefined,
                           color: typography?.body?.color || undefined,
+                          fontFamily: typography?.body?.fontFamily || undefined,
                         }}
                       >
                         {para}
@@ -82,6 +85,7 @@ export function About({ about, typography }: AboutProps) {
                       style={{
                         fontSize: typography?.body?.fontSize ? `${typography.body.fontSize}px` : undefined,
                         color: typography?.body?.color || undefined,
+                        fontFamily: typography?.body?.fontFamily || undefined,
                       }}
                     >
                       {para}

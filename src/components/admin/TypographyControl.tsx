@@ -7,10 +7,19 @@ type Props = {
   onChange: (val: SectionTypography) => void;
 };
 
-export function TypographyControl({ label, value, onChange }: Props) {
+const FONT_OPTIONS = [
+  { label: "Default Theme", value: "" },
+  { label: "Inter (Body)", value: "var(--font-inter), sans-serif" },
+  { label: "Bodoni Moda (Display)", value: "var(--font-bodoni), serif" },
+  { label: "Cormorant Garamond (Heading)", value: "var(--font-cormorant), serif" },
+  { label: "Yatra One (Decorative)", value: "var(--font-yatra), cursive" },
+  { label: "Marcellus (Elegant)", value: "var(--font-marcellus), serif" },
+];
+
+export const TypographyControl = React.memo(function TypographyControl({ label, value, onChange }: Props) {
   const updateField = (
     element: "overhead" | "heading" | "subheading" | "body",
-    field: "fontSize" | "color",
+    field: "fontSize" | "color" | "fontFamily",
     newVal: string | number
   ) => {
     onChange({
@@ -31,6 +40,18 @@ export function TypographyControl({ label, value, onChange }: Props) {
           <label className="text-xs uppercase tracking-wider text-charcoal/60 block">
             Overhead / Caption
           </label>
+          <div>
+            <label className="text-[10px] text-charcoal/40 block mb-1">Font Family</label>
+            <select
+              value={value?.overhead?.fontFamily || ""}
+              onChange={(e) => updateField("overhead", "fontFamily", e.target.value)}
+              className="w-full border border-charcoal/15 px-2 py-1 text-xs bg-transparent"
+            >
+              {FONT_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className="text-[10px] text-charcoal/40 block mb-1">Color</label>
             <div className="flex items-center gap-2">
@@ -63,6 +84,18 @@ export function TypographyControl({ label, value, onChange }: Props) {
             Heading
           </label>
           <div>
+            <label className="text-[10px] text-charcoal/40 block mb-1">Font Family</label>
+            <select
+              value={value?.heading?.fontFamily || ""}
+              onChange={(e) => updateField("heading", "fontFamily", e.target.value)}
+              className="w-full border border-charcoal/15 px-2 py-1 text-xs bg-transparent"
+            >
+              {FONT_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label className="text-[10px] text-charcoal/40 block mb-1">Color</label>
             <div className="flex items-center gap-2">
               <input
@@ -93,6 +126,18 @@ export function TypographyControl({ label, value, onChange }: Props) {
           <label className="text-xs uppercase tracking-wider text-charcoal/60 block">
             Subtitle / Subheading
           </label>
+          <div>
+            <label className="text-[10px] text-charcoal/40 block mb-1">Font Family</label>
+            <select
+              value={value?.subheading?.fontFamily || ""}
+              onChange={(e) => updateField("subheading", "fontFamily", e.target.value)}
+              className="w-full border border-charcoal/15 px-2 py-1 text-xs bg-transparent"
+            >
+              {FONT_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className="text-[10px] text-charcoal/40 block mb-1">Color</label>
             <div className="flex items-center gap-2">
@@ -125,6 +170,18 @@ export function TypographyControl({ label, value, onChange }: Props) {
             Body
           </label>
           <div>
+            <label className="text-[10px] text-charcoal/40 block mb-1">Font Family</label>
+            <select
+              value={value?.body?.fontFamily || ""}
+              onChange={(e) => updateField("body", "fontFamily", e.target.value)}
+              className="w-full border border-charcoal/15 px-2 py-1 text-xs bg-transparent"
+            >
+              {FONT_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label className="text-[10px] text-charcoal/40 block mb-1">Color</label>
             <div className="flex items-center gap-2">
               <input
@@ -152,4 +209,6 @@ export function TypographyControl({ label, value, onChange }: Props) {
       </div>
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  return JSON.stringify(prevProps.value) === JSON.stringify(nextProps.value) && prevProps.label === nextProps.label;
+});
