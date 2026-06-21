@@ -72,6 +72,17 @@ export async function getSettings(): Promise<SiteSettings> {
     parsed.typography.vision = { ...defaultSettings.typography?.vision, ...parsed.typography.vision };
     parsed.typography.contact = { ...defaultSettings.typography?.contact, ...parsed.typography.contact };
   }
+  
+  if (!parsed.guidance) {
+    parsed.guidance = defaultSettings.guidance;
+  } else {
+    if (!parsed.guidance.guru) parsed.guidance.guru = defaultSettings.guidance?.guru;
+    if (!parsed.guidance.parents) parsed.guidance.parents = defaultSettings.guidance?.parents;
+    if (!parsed.guidance.mentor) parsed.guidance.mentor = defaultSettings.guidance?.mentor;
+    if (!parsed.guidance.sevaHighlights || parsed.guidance.sevaHighlights.length === 0) {
+      parsed.guidance.sevaHighlights = defaultSettings.guidance?.sevaHighlights;
+    }
+  }
 
   return parsed;
 }

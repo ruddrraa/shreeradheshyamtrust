@@ -46,6 +46,13 @@ export async function GET() {
         settings.typography = defaultSettings.typography;
         changed = true;
       }
+      if (!settings.guidance) {
+        settings.guidance = defaultSettings.guidance;
+        changed = true;
+      } else if (!settings.guidance.sevaHighlights || settings.guidance.sevaHighlights.length === 0) {
+        settings.guidance.sevaHighlights = defaultSettings.guidance?.sevaHighlights;
+        changed = true;
+      }
       if (changed) {
         await settings.save();
       }
@@ -107,6 +114,39 @@ export async function PUT(req: NextRequest) {
       const { url, publicId } = await uploadImage(body.visionImage, "settings");
       body.visionImage = url;
       body.visionImagePublicId = publicId;
+    }
+
+    if (body.guidance) {
+      if (body.guidance.guru?.image?.startsWith("data:")) {
+        if (currentSettings?.guidance?.guru?.imagePublicId) await deleteImage(currentSettings.guidance.guru.imagePublicId).catch(() => {});
+        const { url, publicId } = await uploadImage(body.guidance.guru.image, "settings");
+        body.guidance.guru.image = url;
+        body.guidance.guru.imagePublicId = publicId;
+      }
+      if (body.guidance.parents?.image?.startsWith("data:")) {
+        if (currentSettings?.guidance?.parents?.imagePublicId) await deleteImage(currentSettings.guidance.parents.imagePublicId).catch(() => {});
+        const { url, publicId } = await uploadImage(body.guidance.parents.image, "settings");
+        body.guidance.parents.image = url;
+        body.guidance.parents.imagePublicId = publicId;
+      }
+      if (body.guidance.mentor?.image?.startsWith("data:")) {
+        if (currentSettings?.guidance?.mentor?.imagePublicId) await deleteImage(currentSettings.guidance.mentor.imagePublicId).catch(() => {});
+        const { url, publicId } = await uploadImage(body.guidance.mentor.image, "settings");
+        body.guidance.mentor.image = url;
+        body.guidance.mentor.imagePublicId = publicId;
+      }
+      if (body.guidance.sevaHighlights && Array.isArray(body.guidance.sevaHighlights)) {
+        for (let i = 0; i < body.guidance.sevaHighlights.length; i++) {
+          const seva = body.guidance.sevaHighlights[i];
+          if (seva.image && seva.image.startsWith("data:")) {
+            const oldSeva = currentSettings?.guidance?.sevaHighlights?.[i];
+            if (oldSeva?.imagePublicId) await deleteImage(oldSeva.imagePublicId).catch(() => {});
+            const { url, publicId } = await uploadImage(seva.image, "settings");
+            seva.image = url;
+            seva.imagePublicId = publicId;
+          }
+        }
+      }
     }
 
     if (!currentSettings) {

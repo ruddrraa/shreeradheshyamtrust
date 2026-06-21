@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
 import { Impact } from "@/components/home/Impact";
 import { About } from "@/components/home/About";
+import { Guidance } from "@/components/home/Guidance";
 import { Pillars } from "@/components/home/Pillars";
 import { Vision } from "@/components/home/Vision";
 import { Gallery } from "@/components/home/Gallery";
@@ -120,6 +121,7 @@ export default async function HomePage() {
           }} 
           typography={deepMergeTypography(settings.typography?.global, settings.typography?.about)}
         />
+        <Guidance guidance={settings.guidance} />
         <Pillars pillars={settings.pillars || []} typography={deepMergeTypography(settings.typography?.global, settings.typography?.pillars)} />
         <Vision 
           sanskrit={settings.visionSanskrit}

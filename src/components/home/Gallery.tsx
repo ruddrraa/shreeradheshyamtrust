@@ -25,9 +25,12 @@ interface GalleryProps {
 export function Gallery({ images, typography }: GalleryProps) {
   const [filter, setFilter] = useState<GalleryCategory | "all">("all");
   const [selected, setSelected] = useState<GalleryImage | null>(null);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   const filtered =
     filter === "all" ? images : images.filter((img) => img.category === filter);
+    
+  const visibleImages = filtered.slice(0, visibleCount);
 
   return (
     <section id="gallery" className="py-32 lg:py-52 bg-background">
@@ -43,7 +46,10 @@ export function Gallery({ images, typography }: GalleryProps) {
           {categories.map((cat) => (
             <button
               key={cat.value}
-              onClick={() => setFilter(cat.value)}
+              onClick={() => {
+                setFilter(cat.value);
+                setVisibleCount(9);
+              }}
               className={cn(
                 "px-7 py-3 text-[10px] uppercase tracking-[0.22em] transition-all duration-500 rounded-full font-medium",
                 filter === cat.value
@@ -58,10 +64,10 @@ export function Gallery({ images, typography }: GalleryProps) {
 
         <motion.div
           layout
-          className="mt-20 columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8"
+          className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filtered.map((image, i) => (
+            {visibleImages.map((image, i) => (
               <motion.div
                 key={image._id}
                 layout
@@ -69,15 +75,14 @@ export function Gallery({ images, typography }: GalleryProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
                 transition={{ duration: 0.6, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="break-inside-avoid group cursor-pointer"
+                className="group cursor-pointer"
                 onClick={() => setSelected(image)}
               >
-                <div className="museum-frame relative overflow-hidden">
+                <div className="museum-frame relative overflow-hidden aspect-[4/5]">
                   {image.url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                     <video
                       src={image.url}
-                      className="w-full h-auto object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
-                      style={{ width: "100%", height: "auto" }}
+                      className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
                       muted
                       loop
                       playsInline
@@ -89,10 +94,11 @@ export function Gallery({ images, typography }: GalleryProps) {
                     <SacredImage
                       src={image.url}
                       alt={image.caption || "Gallery image"}
-                      width={720}
-                      height={i % 3 === 0 ? 960 : i % 3 === 1 ? 600 : 780}
-                      className="w-full h-auto object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
-                      style={{ width: "100%", height: "auto" }}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      quality={75}
+                      priority={i < 4}
+                      className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]"
                     />
                   )}
                   <div className="absolute inset-0 z-[4] bg-charcoal/0 group-hover:bg-charcoal/12 transition-colors duration-700" />
@@ -106,6 +112,21 @@ export function Gallery({ images, typography }: GalleryProps) {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {filtered.length > visibleCount && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-16 flex justify-center"
+          >
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 9)}
+              className="px-8 py-3 text-xs uppercase tracking-[0.2em] font-medium text-charcoal border border-charcoal/20 hover:border-gold hover:text-gold transition-colors duration-500"
+            >
+              Load More
+            </button>
+          </motion.div>
+        )}
       </Container>
 
       <AnimatePresence>

@@ -113,6 +113,33 @@ export interface SiteSettings {
     videos?: SectionTypography;
     events?: SectionTypography;
   };
+  guidance?: {
+    guru?: {
+      name: string;
+      details: string;
+      image: string;
+      imagePublicId?: string;
+    };
+    parents?: {
+      name: string;
+      details: string;
+      image: string;
+      imagePublicId?: string;
+    };
+    mentor?: {
+      name: string;
+      title: string;
+      details: string;
+      image: string;
+      imagePublicId?: string;
+    };
+    sevaHighlights?: {
+      title: string;
+      subtitle: string;
+      image: string;
+      imagePublicId?: string;
+    }[];
+  };
   colorHistory?: {
     themeBackground?: string;
     themeSurface?: string;

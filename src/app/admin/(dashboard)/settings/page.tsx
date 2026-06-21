@@ -503,6 +503,190 @@ export default function SettingsAdminPage() {
           />
         </section>
 
+        <section className="p-6 bg-white border border-charcoal/5 space-y-8">
+          <h2 className="font-heading text-lg text-charcoal">Guidance & Seva Highlights</h2>
+          
+          {/* Guru Ji */}
+          <div className="space-y-4 border-b border-charcoal/10 pb-6">
+            <h3 className="text-sm font-medium text-charcoal">Guru Ji Details</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Guru Ji Name</label>
+                <input
+                  type="text"
+                  value={settings.guidance?.guru?.name || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), guru: { ...(settings.guidance?.guru || { name: "", details: "", image: "" }), name: e.target.value } } })}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Guru Ji Image</label>
+                <div className="flex items-center gap-4">
+                  {settings.guidance?.guru?.image && (
+                    <img src={settings.guidance.guru.image} alt="guru" className="h-10 w-10 object-cover" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, (val) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), guru: { ...(settings.guidance?.guru || { name: "", details: "", image: "" }), image: val } } }))}
+                    className="text-sm max-w-[200px]"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Guru Ji Details</label>
+                <textarea
+                  value={settings.guidance?.guru?.details || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), guru: { ...(settings.guidance?.guru || { name: "", details: "", image: "" }), details: e.target.value } } })}
+                  rows={2}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Parents */}
+          <div className="space-y-4 border-b border-charcoal/10 pb-6">
+            <h3 className="text-sm font-medium text-charcoal">Parents Details</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Parents Name</label>
+                <input
+                  type="text"
+                  value={settings.guidance?.parents?.name || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), parents: { ...(settings.guidance?.parents || { name: "", details: "", image: "" }), name: e.target.value } } })}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Parents Image</label>
+                <div className="flex items-center gap-4">
+                  {settings.guidance?.parents?.image && (
+                    <img src={settings.guidance.parents.image} alt="parents" className="h-10 w-10 object-cover" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, (val) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), parents: { ...(settings.guidance?.parents || { name: "", details: "", image: "" }), image: val } } }))}
+                    className="text-sm max-w-[200px]"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Parents Details</label>
+                <textarea
+                  value={settings.guidance?.parents?.details || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), parents: { ...(settings.guidance?.parents || { name: "", details: "", image: "" }), details: e.target.value } } })}
+                  rows={2}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Mentor */}
+          <div className="space-y-4 border-b border-charcoal/10 pb-6">
+            <h3 className="text-sm font-medium text-charcoal">Mentor Details</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Mentor Name</label>
+                <input
+                  type="text"
+                  value={settings.guidance?.mentor?.name || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), mentor: { ...(settings.guidance?.mentor || { name: "", title: "", details: "", image: "" }), name: e.target.value } } })}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Mentor Title</label>
+                <input
+                  type="text"
+                  value={settings.guidance?.mentor?.title || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), mentor: { ...(settings.guidance?.mentor || { name: "", title: "", details: "", image: "" }), title: e.target.value } } })}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+                  placeholder="e.g. Trustee | Singer"
+                />
+              </div>
+              <div>
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Mentor Image</label>
+                <div className="flex items-center gap-4">
+                  {settings.guidance?.mentor?.image && (
+                    <img src={settings.guidance.mentor.image} alt="mentor" className="h-10 w-10 object-cover" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, (val) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), mentor: { ...(settings.guidance?.mentor || { name: "", title: "", details: "", image: "" }), image: val } } }))}
+                    className="text-sm max-w-[200px]"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Mentor Details</label>
+                <textarea
+                  value={settings.guidance?.mentor?.details || ""}
+                  onChange={(e) => setSettings({ ...settings, guidance: { ...(settings.guidance || {}), mentor: { ...(settings.guidance?.mentor || { name: "", title: "", details: "", image: "" }), details: e.target.value } } })}
+                  rows={2}
+                  className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Seva Highlights */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-charcoal">Seva Highlights</h3>
+            {(settings.guidance?.sevaHighlights || []).map((seva, index) => (
+              <div key={index} className="grid sm:grid-cols-2 gap-4 border border-charcoal/5 p-4 bg-stone-50">
+                <div>
+                  <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Seva Title</label>
+                  <input
+                    type="text"
+                    value={seva.title}
+                    onChange={(e) => {
+                      const newHighlights = [...(settings.guidance?.sevaHighlights || [])];
+                      newHighlights[index].title = e.target.value;
+                      setSettings({ ...settings, guidance: { ...settings.guidance, sevaHighlights: newHighlights } });
+                    }}
+                    className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Seva Subtitle</label>
+                  <input
+                    type="text"
+                    value={seva.subtitle}
+                    onChange={(e) => {
+                      const newHighlights = [...(settings.guidance?.sevaHighlights || [])];
+                      newHighlights[index].subtitle = e.target.value;
+                      setSettings({ ...settings, guidance: { ...settings.guidance, sevaHighlights: newHighlights } });
+                    }}
+                    className="w-full border border-charcoal/15 px-3 py-2 text-sm bg-transparent"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-xs uppercase tracking-wider text-charcoal/40 block mb-2">Seva Image</label>
+                  <div className="flex items-center gap-4">
+                    {seva.image && (
+                      <img src={seva.image} alt="seva" className="h-10 w-10 object-cover" />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, (val) => {
+                        const newHighlights = [...(settings.guidance?.sevaHighlights || [])];
+                        newHighlights[index].image = val;
+                        setSettings({ ...settings, guidance: { ...settings.guidance, sevaHighlights: newHighlights } });
+                      })}
+                      className="text-sm max-w-[200px]"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="p-6 bg-white border border-charcoal/5 space-y-4">
           <h2 className="font-heading text-lg text-charcoal">Events & Gatherings</h2>
           <TypographyControl

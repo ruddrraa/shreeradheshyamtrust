@@ -62,6 +62,14 @@ body {
   font-family: var(--font-devanagari), serif;
 }
 
+.font-yatra {
+  font-family: var(--font-yatra), serif;
+}
+
+.font-marcellus {
+  font-family: var(--font-marcellus), serif;
+}
+
 /* ─── Sacred image grade — golden hour, unified visual universe ─── */
 .sacred-image-wrap {
   isolation: isolate;

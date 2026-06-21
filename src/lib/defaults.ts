@@ -64,6 +64,41 @@ export const defaultSettings: Omit<SiteSettings, "_id"> = {
     sankirtanGatherings: 120,
     devoteesReached: 5000,
   },
+  guidance: {
+    guru: {
+      name: "श्री राधे श्याम भक्ति सरोवर ट्रस्ट",
+      details: "द्वारा प्रसारित भगवद् प्राप्त प्रातः स्मरणीय परम पूज्य सद्गुरुदेव श्री प्रेमानंद जी महाराज की पावन शिक्षाएँ एवं उपदेश",
+      image: "/images/guru-ji-placeholder.jpg",
+    },
+    parents: {
+      name: "Pujniya Pita Ji Shree Atma Nand Rai Ewam Mata Ji Smt Hira Rai",
+      details: "Serving as the guiding light and foundational pillars of our trust, inspiring our journey towards selfless service and devotion.",
+      image: "/images/parents-placeholder.jpg",
+    },
+    mentor: {
+      name: "Neha Rai",
+      title: "Trustee & Worker (Mentor) | Devotional Singer (Hari Naam Pracharak)",
+      details: "Leading the efforts of the trust with dedication, devotion, and a beautiful voice that spreads the divine name of Hari.",
+      image: "/images/neha-rai-placeholder.jpg",
+    },
+    sevaHighlights: [
+      {
+        title: "Sanatan Dharam Prachaar Dhwaja Yatra",
+        subtitle: "Seva while serving cow",
+        image: "/images/seva-cow-placeholder.jpg",
+      },
+      {
+        title: "Annapurna Seva Bhojan Vitran",
+        subtitle: "Providing meals to the needy",
+        image: "/images/seva-bhojan-placeholder.jpg",
+      },
+      {
+        title: "Sharbat Ewam Jal Seva",
+        subtitle: "Quenching thirst with devotion",
+        image: "/images/seva-jal-placeholder.jpg",
+      },
+    ],
+  },
 };
 
 export const testimonials: Testimonial[] = [
