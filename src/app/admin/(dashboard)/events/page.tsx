@@ -48,7 +48,7 @@ export default function EventsAdminPage() {
       const body = {
         title,
         description,
-        date,
+        date: new Date(date).toISOString(),
         lumaLink,
         banner,
         ...(editingId && { id: editingId }),
